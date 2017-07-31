@@ -4,6 +4,8 @@
     - So there are no conflicts (two people changing the same code)
   + Assign it to yourself
 2) Make your own feature brance
+  + Branch name should be of the form "`username<dash>few words on what your fixing"` all separated with hyphens
+    + ex: `tbauer516-frontend-ajax`
   + `git branch <branch-name>`
   + `git checkout <branch-name>`
   + start coding
@@ -17,3 +19,5 @@
   + `git pull` from `master`
 5) Close your issue from #1
 6) Go back to #1
+
+## \* Once a pull request is made and committed, that branch should not be used again. If need be, make another "Hotfix" branch.
