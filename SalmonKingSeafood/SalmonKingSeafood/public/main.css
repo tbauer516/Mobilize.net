@@ -1,5 +1,6 @@
 ﻿.dropdown-button {
     padding: 8px;
+    padding-left: 20px;
     border: none;
     cursor: pointer;
     background-color: #f8f8f8;
@@ -10,13 +11,14 @@
 
 .dropdown-content a {
     color: #5e5e5e;
-    padding: 12px 16px;
+    padding: 12px;
     text-decoration: none;
     display: block;
     font-size: 14px;
 }
 
 .dropdown-content {
+    padding-left: 20px;
     display: none;
     background-color: white;
     box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
@@ -39,6 +41,10 @@
     margin: 4px;
 }
 
+.dropdown {
+    display: none;
+}
+
 #navbar-content {
     display: none;
 }
@@ -55,9 +61,9 @@
     margin-right: 10px;
 }
 
-/*@media screen and (min-width: 480px) {
+@media screen and (min-width: 480px) {
 
-}*/
+}
 
 @media screen and (min-width: 768px) {
     #navbar-content {
@@ -99,4 +105,8 @@
     #hamburger-id {
         display: none;
     }
+}
+
+@media screen and (min-width: 1024px) {
+
 }
