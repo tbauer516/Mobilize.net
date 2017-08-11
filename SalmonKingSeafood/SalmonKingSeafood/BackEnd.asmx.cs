@@ -75,8 +75,13 @@ namespace SalmonKingSeafood
                 // var results = new Dictionary<string, object>();
                 var results = new List<Dictionary<string, object>>();
 
+<<<<<<< HEAD
                 string cmdString = "INSERT INTO tblPRODUCT(ProductName, ProductCode, ProductDescr, SerialNumber, Discontinued, UnitPrice, QuantityPerUnit, Unit ) " +
                                    "VALUES (@ProductName, @ProductCode, @ProductDescr, @SerialNumber, @Discontinued, @UnitPrice, @QuantityPerUnit)";
+=======
+                string cmdString = "INSERT INTO tblPRODUCT(ProductName, ProductCode, ProductDescr, ProductCategory, ProductSerialNumber, Discontinued, UnitPrice, QtyPerUnit) " +
+                                   "VALUES (@ProductName, @ProductCode, @ProductDescr, @ProductCategory, @ProductSerialNumber, @Discontinued, @UnitPrice, @QtyPerUnit)";
+>>>>>>> 6c59ffc5e1eed5563f2ea522ddb2c1022b100472
                 SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
                 insertProductCmd.Parameters.AddWithValue("@ProductName", productInfo[0]);
                 insertProductCmd.Parameters.AddWithValue("@ProductCode", productInfo[1]);
