@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Manageing Products</title>
+    <link rel="stylesheet" href="product.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="product.js"></script>
+</head>
+<body>
+    <h1>Products</h1>
+    <button>Add</button>
+    <button>Edit</button>
+    <button>Save</button>
+    <button>Delete</button>
+    <button>Search</button>
+
+    <h2>Product Information</h2>
+    <form id="form" method="get" action="">
+        Product Code: 
+        <input type="text" id="pcode" name="pcode" placeholder="T" /><br />
+        Product Name:
+        <input type="text" id="pname" name="pname" placeholder="Tuna" /><br />
+        Description:
+        <input type="text" id="pdescr" name="pdescr" placeholder="Delicious fish" /><br />
+        Category:
+        <select id="pcategory" name="pcategory">
+            <option value="Fish">Fish</option>
+            <option value="Crab">Crab</option>
+            <option value="Oyster">Oyster</option>
+            <option value="Meat">Meat</option>
+            <option value="Fungi">Fungi</option>
+            <option value="Feather">Feather</option>
+            <option value="Shark">Shark</option>
+            <option value="Turtle">Turtle</option>
+        </select>
+        <br />
+        Serial Number:
+        <input type="text" id="pserial" name="pserial" placeholder="12345" /><br />
+        Discontinued:
+        <input type="checkbox" id="pdiscontinued" name="pdiscontinued" /><br />
+        Unit Price: 
+        <input type="number" id="punitprice" name="punitprice" placeholder="30.00"/><br />
+        Quantity per unit: 
+        <input type="number" id="pquantity" name="pquantity" placeholder="25"/><br />
+        Units:
+        <input type="text" id="punit" name="punit" placeholder="kg"/><br />
+        <input type="submit" id="psubmit" value="Submit"/>
+    </form>
+    <h2>Output:</h2>
+    <div id="output"></div>
+</body>
+</html>
