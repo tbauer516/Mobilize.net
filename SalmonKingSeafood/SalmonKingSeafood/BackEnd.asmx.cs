@@ -65,5 +65,52 @@ namespace SalmonKingSeafood
                 return new JavaScriptSerializer().Serialize(results);
             }
         }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string SQLInsertNewProduct(String[] productInfo)
+        {
+            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
+            {
+                // var results = new Dictionary<string, object>();
+                var results = new List<Dictionary<string, object>>();
+
+                string cmdString = "INSERT INTO tblPRODUCT(ProductName, ProductCode, ProductDescr, ProductCategory, ProductSerialNumber, Discontinued, UnitPrice, QtyPerUnit) " +
+                                   "VALUES (@ProductName, @ProductCode, @ProductDescr, @ProductCategory, @ProductSerialNumber, @Discontinued, @UnitPrice, @QtyPerUnit)";
+                SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
+                insertProductCmd.Parameters.AddWithValue("@ProductName", productInfo[0]);
+                insertProductCmd.Parameters.AddWithValue("@ProductCode", productInfo[1]);
+                insertProductCmd.Parameters.AddWithValue("@ProductDescr", productInfo[2]);
+                insertProductCmd.Parameters.AddWithValue("@ProductCategory", productInfo[3]);
+                insertProductCmd.Parameters.AddWithValue("@ProductSerialNumber", productInfo[4]);
+                insertProductCmd.Parameters.AddWithValue("@Discontinued", productInfo[5]);
+                insertProductCmd.Parameters.AddWithValue("@UnitPrice", productInfo[6]);
+                insertProductCmd.Parameters.AddWithValue("@QtyPerUnit", productInfo[7]);
+                dbconnect.Open();
+
+                using (SqlDataReader reader = insertProductCmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var item = new Dictionary<string, object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
+                            }
+                            results.Add(item);
+                        }
+                    }
+                }
+
+                dbconnect.Close();
+
+                Context.Response.Clear();
+                Context.Response.ContentType = "application/json";
+                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
+                return new JavaScriptSerializer().Serialize(results);
+            }
+        }
     }
 }
