@@ -4,3 +4,11 @@
 button {
     display: inline-block;
 }
+
+#hello {
+    clear: right;
+}
+
+input {
+    clear: both;
+}

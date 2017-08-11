@@ -75,8 +75,8 @@ namespace SalmonKingSeafood
                 // var results = new Dictionary<string, object>();
                 var results = new List<Dictionary<string, object>>();
 
-                string cmdString = "INSERT INTO tblPRODUCT(ProductName, ProductCode, ProductDescr, ProductCategory, ProductSerialNumber, Discontinued, UnitPrice, QtyPerUnit) " +
-                                   "VALUES (@ProductName, @ProductCode, @ProductDescr, @ProductCategory, @ProductSerialNumber, @Discontinued, @UnitPrice, @QtyPerUnit)";
+                string cmdString = "INSERT INTO tblPRODUCT(ProductName, ProductCode, ProductDescr, SerialNumber, Discontinued, UnitPrice, QuantityPerUnit, Unit ) " +
+                                   "VALUES (@ProductName, @ProductCode, @ProductDescr, @SerialNumber, @Discontinued, @UnitPrice, @QuantityPerUnit)";
                 SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
                 insertProductCmd.Parameters.AddWithValue("@ProductName", productInfo[0]);
                 insertProductCmd.Parameters.AddWithValue("@ProductCode", productInfo[1]);
@@ -89,6 +89,45 @@ namespace SalmonKingSeafood
                 dbconnect.Open();
 
                 using (SqlDataReader reader = insertProductCmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var item = new Dictionary<string, object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
+                            }
+                            results.Add(item);
+                        }
+                    }
+                }
+
+                dbconnect.Close();
+
+                Context.Response.Clear();
+                Context.Response.ContentType = "application/json";
+                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
+                return new JavaScriptSerializer().Serialize(results);
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string SQLFindProduct(String[] productInfo)
+        {
+            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
+            {
+                // var results = new Dictionary<string, object>();
+                var results = new List<Dictionary<string, object>>();
+
+                string cmdString = "SELECT * FROM tblPRODUCT WHERE ProductName = @ProductName";
+                SqlCommand FindProductCmd = new SqlCommand(cmdString, dbconnect);
+                FindProductCmd.Parameters.AddWithValue("@ProductName", productInfo[0]);
+                dbconnect.Open();
+
+                using (SqlDataReader reader = FindProductCmd.ExecuteReader())
                 {
                     if (reader.HasRows)
                     {

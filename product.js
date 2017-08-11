@@ -2,27 +2,28 @@
     "use strict";
 
     $(window).ready(function () {
-        console.log("success");
-        console.log($("#psubmit"));
+        var buttons = $("button");
         $("form").submit(function (event) {
-            switch(this.id) {
+            switch("search") {
                 case "add":
-                    getproductInfo("SQLInsertNewProduct");
+                    getProductInfo("SQLInsertNewProduct");
                 case "edit":
-                    getproductInfo("SQLUpdateProduct");
+                    getProductInfo("SQLUpdateProduct");
                 case "save":
-                    getproductInfo("SQLUpdateNewProduct");
+                    getProductInfo("SQLUpdateNewProduct");
                 case "delete":
-                    getproductInfo("SQLDeleteProduct");
+                    getProductInfo("SQLDeleteProduct");
                 case "search":
-                    getproductInfo("SQLFindProduct");
+                    getProductInfo("SQLFindProduct");
+                case "hello":
+                    getProductInfo("HelloWorld");
             }
-            getproductInfo();
             event.preventDefault();
         });
     });
 
-    function getproductInfo(method) {
+    function getProductInfo(method) {
+        var url = "BackEnd.asmx/" + method;
         var output = $("#output");
         output.css("white-space", "pre-line");
         var product_info = $(this).serializeArray();
@@ -30,14 +31,17 @@
         $.each(product_info, function (i, info) {
             product_data.push(info.value)
         })
-        console.log(product_info);
         $.ajax({
-            type: "POST"
-            URL: "BackEnd.asmx/" + method
-            data: product_info
-            dataType: "json"
+            type: "GET",
+            URL: "BackEnd.asmx/SQLFindProduct",
+           // data: product_info,
+            dataType: "json",
             success: function (data) {
+                console.log("hi");
                 output.html(data);
+            },
+            error: function (data) {
+                console.log(data);
             }
         })
     }
