@@ -10,14 +10,15 @@
 </head>
 <body>
     <h1>Products</h1>
-    <button>Add</button>
-    <button>Edit</button>
-    <button>Save</button>
-    <button>Delete</button>
-    <button>Search</button>
+   
 
     <h2>Product Information</h2>
     <form id="form" method="get" action="">
+        <button type="submit" id="add">Add</button>
+        <button type="submit" id="edit">Edit</button>
+        <button type="submit" id="save">Save</button>
+        <button type="submit" id="delete">Delete</button>
+        <button type="submit" id="search">Search</button>
         Product Code: 
         <input type="text" id="pcode" name="pcode" placeholder="T" /><br />
         Product Name:
@@ -46,7 +47,6 @@
         <input type="number" id="pquantity" name="pquantity" placeholder="25"/><br />
         Units:
         <input type="text" id="punit" name="punit" placeholder="kg"/><br />
-        <input type="submit" id="psubmit" value="Submit"/>
     </form>
     <h2>Output:</h2>
     <div id="output"></div>
