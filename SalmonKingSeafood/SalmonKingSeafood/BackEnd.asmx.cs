@@ -115,7 +115,7 @@ namespace SalmonKingSeafood
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string SQLFindProduct(String[] productInfo)
+        public string SQLFindProduct()
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
@@ -124,7 +124,7 @@ namespace SalmonKingSeafood
 
                 string cmdString = "SELECT * FROM tblPRODUCT WHERE ProductName = @ProductName";
                 SqlCommand FindProductCmd = new SqlCommand(cmdString, dbconnect);
-                FindProductCmd.Parameters.AddWithValue("@ProductName", productInfo[0]);
+                FindProductCmd.Parameters.AddWithValue("@ProductName", "Salmon");
                 dbconnect.Open();
 
                 using (SqlDataReader reader = FindProductCmd.ExecuteReader())
