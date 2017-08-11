@@ -35,9 +35,48 @@ namespace SalmonKingSeafood
             {
                 // var results = new Dictionary<string, object>();
                 var results = new List<Dictionary<string, object>>();
-
+                
                 string cmdString = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = @tableType";
+
                 SqlCommand testCmd = new SqlCommand(cmdString, dbconnect);
+                testCmd.Parameters.AddWithValue("@tableType", "BASE TABLE");
+                dbconnect.Open();
+                
+                using (SqlDataReader reader = testCmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var item = new Dictionary<string, object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
+                            }
+                            results.Add(item);
+                        }
+                    }
+                }
+
+                dbconnect.Close();
+
+                Context.Response.Clear();
+                Context.Response.ContentType = "application/json";
+                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
+                return new JavaScriptSerializer().Serialize(results);
+            }
+        }
+
+
+        public string ProductTest()
+        {
+            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
+            {
+                var results = new List<Dictionary<string, object>>();
+                dbconnect.Open();
+                string query = "SELECT * FROM tblSUPPLIER";
+
+                SqlCommand testCmd = new SqlCommand(query, dbconnect);
                 testCmd.Parameters.AddWithValue("@tableType", "BASE TABLE");
                 dbconnect.Open();
 
@@ -53,6 +92,7 @@ namespace SalmonKingSeafood
                                 item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
                             }
                             results.Add(item);
+                            Console.WriteLine(item);
                         }
                     }
                 }
