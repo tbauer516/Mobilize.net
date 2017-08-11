@@ -12,20 +12,18 @@ const request = {
 };
 
 let getTestSql = () => {
-    return new Promise((resolve, reject) => {
-        fetch('/BackEnd.asmx/SQLTest', request)
-            .then((response) => {
-                console.log(response);
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-                resolve(data.d);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    })
+    return fetch('/BackEnd.asmx/SQLTest', request)
+        .then((response) => {
+            console.log(response);
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
+            return data.d;
+        })
+        .catch((err) => {
+            console.log(err);
+        })
         .then(data => {
             let testDiv = document.querySelector('#sqltestdata');
             //testDiv.innerHTML = data;
