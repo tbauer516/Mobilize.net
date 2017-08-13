@@ -67,20 +67,18 @@ namespace SalmonKingSeafood
             }
         }
 
-
-        public string ProductTest()
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string SupplierTest()
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
                 var results = new List<Dictionary<string, object>>();
-                dbconnect.Open();
-                string query = "SELECT * FROM tblSUPPLIER";
-
-                SqlCommand testCmd = new SqlCommand(query, dbconnect);
-                testCmd.Parameters.AddWithValue("@tableType", "BASE TABLE");
+                string cmdString = "SELECT * FROM viewSupplierInfo";
+                SqlCommand SupplierCMD = new SqlCommand(cmdString, dbconnect);
                 dbconnect.Open();
 
-                using (SqlDataReader reader = testCmd.ExecuteReader())
+                using (SqlDataReader reader = SupplierCMD.ExecuteReader())
                 {
                     if (reader.HasRows)
                     {
@@ -92,16 +90,12 @@ namespace SalmonKingSeafood
                                 item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
                             }
                             results.Add(item);
-                            Console.WriteLine(item);
                         }
                     }
                 }
-
                 dbconnect.Close();
-
                 Context.Response.Clear();
                 Context.Response.ContentType = "application/json";
-                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
                 return new JavaScriptSerializer().Serialize(results);
             }
         }
