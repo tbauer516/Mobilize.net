@@ -68,14 +68,18 @@ namespace SalmonKingSeafood
         }
 
         [WebMethod]
+        //[ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public string SupplierTest()
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
                 var results = new List<Dictionary<string, object>>();
-                string cmdString = "SELECT * FROM viewSupplierInfo";
+                //string cmdString = "SELECT * FROM viewSupplierInfo";
+                string cmdString = "SELECT * FROM tblSUPPLIER";
+                // parameters?
                 SqlCommand SupplierCMD = new SqlCommand(cmdString, dbconnect);
+                //SupplierCMD.Parameters.AddWithValue("@ID", "INTEGER");
                 dbconnect.Open();
 
                 using (SqlDataReader reader = SupplierCMD.ExecuteReader())
