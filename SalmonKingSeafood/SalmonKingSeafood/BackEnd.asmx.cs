@@ -70,15 +70,13 @@ namespace SalmonKingSeafood
         }
 
         [WebMethod]
-        //[ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string SupplierView()
+        public string ViewSupplier()
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
                 var results = new List<Dictionary<string, object>>();
-                //string cmdString = "SELECT * FROM viewSupplierInfo";
-                string cmdString = "SELECT * FROM tblSUPPLIER";
+                string cmdString = "SELECT * FROM viewSupplierInfo"; 
                 SqlCommand SupplierCMD = new SqlCommand(cmdString, dbconnect);
                 dbconnect.Open();
 
@@ -105,33 +103,112 @@ namespace SalmonKingSeafood
         }
 
         [WebMethod]
-        public string HelloTest(String value)
-        {
-            return value;
-        }
-
-        [WebMethod]
         [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-        public string SupplierPost(String[] supplierForm)
+        public string InsertSupplier(String[] supplierForm)
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
                 String[] supplierInfo = { "SupplierName", "PaymentTerms", "Notes", "Fname", "Lname", "Email", "Phone", "Title", "Extension", "Fax", "BillingAddress", "City", "State", "Zipcode", "Country" };
                 var results = new List<Dictionary<string, object>>();
 
-                var cmdString = "exec uspInsertSupplierTest @" + supplierInfo[0] + " = '" + supplierForm[0] + "'";
-                // CHANGE THE MAX CONDITION
-                // Make the query
-                for (var i = 1; i < 3; i++)
+                var cmdString = "exec uspInsertSupplier @" + supplierInfo[0] + " = '" + supplierForm[0] + "'";
+                for (int i = 1; i < supplierForm.Length; i++)
                 {
                     cmdString += " , @" + supplierInfo[i] + " = '" + supplierForm[i] + "'";
                 }
 
                 SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
-                //for (int i = 0; i < supplierForm.Length; i++)
-                // CHANGE THE MAX CONDITION
-                // Add the parameters
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < supplierForm.Length; i++)
+                {
+                    insertProductCmd.Parameters.AddWithValue(supplierInfo[i], supplierForm[i]);
+                }
+                dbconnect.Open();
+
+                using (SqlDataReader reader = insertProductCmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var item = new Dictionary<string, object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
+                            }
+                            results.Add(item);
+                        }
+                    }
+                }
+
+                dbconnect.Close();
+                Context.Response.Clear();
+                Context.Response.ContentType = "application/json";
+                return new JavaScriptSerializer().Serialize(results);
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public string UpdateSupplier(String[] supplierForm)
+        {
+            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
+            {
+                String[] supplierInfo = { "SupplierName", "PaymentTerms", "Notes", "Fname", "Lname", "Email", "Phone", "Title", "Extension", "Fax", "BillingAddress", "City", "State", "Zipcode", "Country" };
+                var results = new List<Dictionary<string, object>>();
+
+                var cmdString = "exec uspUpdateSupplier @" + supplierInfo[0] + " = '" + supplierForm[0] + "'";
+                for (int i = 1; i < supplierForm.Length; i++)
+                {
+                    cmdString += " , @" + supplierInfo[i] + " = '" + supplierForm[i] + "'";
+                }
+
+                SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
+                for (int i = 0; i < supplierForm.Length; i++)
+                {
+                    insertProductCmd.Parameters.AddWithValue(supplierInfo[i], supplierForm[i]);
+                }
+                dbconnect.Open();
+
+                using (SqlDataReader reader = insertProductCmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var item = new Dictionary<string, object>();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
+                            }
+                            results.Add(item);
+                        }
+                    }
+                }
+
+                dbconnect.Close();
+                Context.Response.Clear();
+                Context.Response.ContentType = "application/json";
+                return new JavaScriptSerializer().Serialize(results);
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public string DeleteSupplier(String[] supplierForm)
+        {
+            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
+            {
+                String[] supplierInfo = { "SupplierName", "Fname", "Lname", "Title", "BillingAddress", "City", "State", "Zipcode", "Country" };
+                var results = new List<Dictionary<string, object>>();
+
+                var cmdString = "exec uspDeleteSupplier @" + supplierInfo[0] + " = '" + supplierForm[0] + "'";
+                for (int i = 1; i < supplierForm.Length; i++)
+                {
+                    cmdString += " , @" + supplierInfo[i] + " = '" + supplierForm[i] + "'";
+                }
+
+                SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
+                for (int i = 0; i < supplierForm.Length; i++)
                 {
                     insertProductCmd.Parameters.AddWithValue(supplierInfo[i], supplierForm[i]);
                 }

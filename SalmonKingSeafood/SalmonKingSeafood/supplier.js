@@ -11,49 +11,25 @@ const request = {
     mode: 'cors'
 };
 
-// For HelloTest, based on Add button click
-//$("#add-button").click(function (e) {
-//    e.preventDefault();
-//    var value = {
-//        "value" : $("#supplier-name").val()
-//    };
-//    var json = JSON.stringify(value);
-//    $.ajax({
-//        method: 'POST',
-//        url: "/BackEnd.asmx/HelloTest",
-//        contentType: "application/json; charset=utf-8",
-//        dataType: 'json',
-//        data: json,
-//        success: function (response) {
-//            console.log('good');
-//            console.log(response);
-//        },
-//        error: function (response) {
-//            console.log('bad');
-//            console.log(response);
-//        }
-//    });
-//});
-
-// Form submits
-// Find button
-// Find sproc
 $("#add-button").click(function (e) {
-    //e.preventDefault();
-    // Change this
-    var data = [$("#supplier-name").val(), $("#payment").val(), $("#note").val()];
-    console.log(data);
+    //e.preventDefault(); // Disallow the refreshing
+    // Get all values from the form -- find a better way to do this
+    var data = [$("#supplier-name").val(), $("#payment").val(), $("#note").val(), $("#fname").val(), $("#lname").val(), $("#email").val(),
+                $("#phone").val(), $("#title").val(), $("#extension").val(), $("#fax").val(), $("#billing-address").val(), $("#city").val(),
+                $("#state").val(), $("#zipcode").val(), $("#country").val()]
+    //console.log(data); // Debugging
     var json = {
         supplierForm: data
     };
-    console.log(json);
+    //console.log(json); // Debugging
     $.ajax({
         method: 'POST',
-        url: "/BackEnd.asmx/SupplierPost",
+        url: "/BackEnd.asmx/InsertSupplier",
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         data: JSON.stringify(json),
         success: function (response) {
+            console.log("good");
             console.log(response);
         },
         error: function (response) {
@@ -62,8 +38,64 @@ $("#add-button").click(function (e) {
     });
 });
 
+
+$("#edit-button").click(function (e) {
+    //e.preventDefault(); // Disallow the refreshing
+    // Get all values from the form -- find a better way to do this
+    var data = [$("#supplier-name").val(), $("#payment").val(), $("#note").val(), $("#fname").val(), $("#lname").val(), $("#email").val(),
+    $("#phone").val(), $("#title").val(), $("#extension").val(), $("#fax").val(), $("#billing-address").val(), $("#city").val(),
+    $("#state").val(), $("#zipcode").val(), $("#country").val()]
+    //console.log(data); // Debugging
+    var json = {
+        supplierForm: data
+    };
+    //console.log(json); // Debugging
+    $.ajax({
+        method: 'POST',
+        url: "/BackEnd.asmx/UpdateSupplier",
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data: JSON.stringify(json),
+        success: function (response) {
+            console.log("good");
+            console.log(response);
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+});
+
+// DELETE SUPPLIER -- CANNOT HAVE DUPLICATES, WILL NOT WORK
+$("#delete-button").click(function (e) {
+    //e.preventDefault(); // Disallow the refreshing
+    // Get all values from the form -- find a better way to do this
+    var data = [$("#supplier-name").val(), $("#fname").val(), $("#lname").val(), $("#title").val(), $("#billing-address").val(), 
+                $("#city").val(), $("#state").val(), $("#zipcode").val(), $("#country").val()]
+    //console.log(data); // Debugging
+    var json = {
+        supplierForm: data
+    };
+    //console.log(json); // Debugging
+    $.ajax({
+        method: 'POST',
+        url: "/BackEnd.asmx/DeleteSupplier",
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data: JSON.stringify(json),
+        success: function (response) {
+            console.log("good");
+            console.log(response);
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+});
+
+// Get the suppliers and tables
 function getSupplierSQL() {
-    return fetch('/BackEnd.asmx/SupplierView', request)
+    return fetch('/BackEnd.asmx/ViewSupplier', request)
         .then(response => {
             return response.json();
         })
@@ -108,14 +140,12 @@ function buildTable() {
     fnameTH.textContent = "First Name";
     var lnameTH = document.createElement("th");
     lnameTH.textContent = "Last Name";
-    var titleTH = document.createElement("th");
-    titleTH.textContent = "Title";
-
-    // Email & phone
     var emailTH = document.createElement("th");
     emailTH.textContent = "Email";
     var phoneTH = document.createElement("th");
     phoneTH.textContent = "Phone";
+    var titleTH = document.createElement("th");
+    titleTH.textContent = "Title";
     var extensionTH = document.createElement("th");
     extensionTH.textContent = "Extension";
     var faxTH = document.createElement("th");
@@ -140,18 +170,19 @@ function buildTable() {
     threadRow.appendChild(notesTH);
 
     // For table simplicity
-    //threadRow.appendChild(fnameTH);
-    //threadRow.appendChild(lnameTH);
-    //threadRow.appendChild(titleTH);
-    //threadRow.appendChild(emailTH);
-    //threadRow.appendChild(phoneTH);
-    //threadRow.appendChild(extensionTH);
-    //threadRow.appendChild(faxTH);
-    //threadRow.appendChild(billingTH);
-    //threadRow.appendChild(cityTH);
-    //threadRow.appendChild(stateTH);
-    //threadRow.appendChild(zipcodeTH);
-    //threadRow.appendChild(countryTH);
+    threadRow.appendChild(fnameTH);
+    threadRow.appendChild(lnameTH);
+    threadRow.appendChild(emailTH);
+    threadRow.appendChild(phoneTH);
+    threadRow.appendChild(titleTH);
+    threadRow.appendChild(extensionTH);
+    threadRow.appendChild(faxTH);
+    threadRow.appendChild(billingTH);
+    // Hidden for simple visibility
+    threadRow.appendChild(cityTH);
+    threadRow.appendChild(stateTH);
+    threadRow.appendChild(zipcodeTH);
+    threadRow.appendChild(countryTH);
 
     thead.appendChild(threadRow);
     table.appendChild(tbody);
@@ -173,13 +204,13 @@ function populateRows(rows) {
         var count = 0;
         // Iterate over each field
         supplierKeys.forEach(function (key) {
-            if (count < 3) { // Just to grab 3 items for table simplicity
+            //if (count < 11) { // Just to grab 3 items for table simplicity
                 var value = data[key];
                 //console.log(value); // Debugging purposes
                 var td = document.createElement("td");
                 td.textContent = value;
                 supplierTr.appendChild(td);
-            }
+            //}
             count++;
         });
         tbody.appendChild(supplierTr);
