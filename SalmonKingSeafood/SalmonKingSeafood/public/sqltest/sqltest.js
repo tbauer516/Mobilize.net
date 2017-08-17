@@ -1,5 +1,6 @@
 ﻿window.onload = () => {
-    getTestSql();
+    //getTestSql();
+    getSupplierSQL();
 };
 
 const request = {
@@ -19,6 +20,29 @@ let getTestSql = () => {
         })
         .then(data => {
             console.log(data);
+            return data.d;
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        .then(data => {
+            let testDiv = document.querySelector('#sqltestdata');
+            //testDiv.innerHTML = data;
+            console.log(data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+};
+
+let getSupplierSQL = () => {
+    return fetch('/BackEnd.asmx/SupplierTest', request)
+        .then(response => {
+            console.log(response);
+            return response.json();
+        })
+        .then(data => {
+            console.log(data.d);
             return data.d;
         })
         .catch(err => {
