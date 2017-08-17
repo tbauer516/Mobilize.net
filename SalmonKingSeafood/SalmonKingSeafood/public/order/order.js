@@ -106,7 +106,7 @@ const queryProducts = () => {
     
     for (let i = 0; i < productList.length; i++) {
         let newRow = $('<tr>');
-        newRow.append('<td><input name="select-product" type="radio" id=' + i + ' value=' + i + ' /></td>');
+        newRow.append('<td><input name="select-product" type="checkbox" id=' + i + ' value=' + i + ' /></td>');
         for (let j = 0; j < productFormat.length; j++) {
             newRow.append('<td>' + productList[i][productFormat[j]] + '</td>');
         }
