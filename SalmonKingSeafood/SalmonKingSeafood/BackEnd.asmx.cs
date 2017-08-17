@@ -120,16 +120,29 @@ namespace SalmonKingSeafood
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string SQLFindProduct()
+        public string SQLFindProduct(string ProductName, string ProductCode, string SerialNumber, string Discontinued, string UnitPrice, string QuantityPerUnit, string Unit)
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
                 // var results = new Dictionary<string, object>();
                 var results = new List<Dictionary<string, object>>();
 
-                string cmdString = "SELECT * FROM tblPRODUCT WHERE ProductName = @ProductName";
+                string cmdString = "SELECT * FROM tblPRODUCT WHERE " +
+                                   "(ProductName = @ProductName OR ProductName LIKE '%')" +
+                                   "AND (ProductCode = @ProductCode OR ProductCode LIKE '%')" +
+                                   "AND (SerialNumber = @SerialNumber OR SerialNumber LIKE '%')" +
+                                   "AND (Discontinued = @Discontinued OR Discontinued LIKE '%')" +
+                                   "AND (UnitPrice = @UnitPrice OR UnitPrice LIKE '%')" +
+                                   "AND (QuantityPerUnit = @QuantityPerUnit OR QuantityPerUnit LIKE '%')" +
+                                   "AND (Unit = @Unit OR Unit LIKE '%')";
                 SqlCommand FindProductCmd = new SqlCommand(cmdString, dbconnect);
-                FindProductCmd.Parameters.AddWithValue("@ProductName", "Salmon");
+                FindProductCmd.Parameters.AddWithValue("@ProductName", ProductName);
+                FindProductCmd.Parameters.AddWithValue("@ProductCode", ProductCode);
+                FindProductCmd.Parameters.AddWithValue("@SerialNumber", SerialNumber);
+                FindProductCmd.Parameters.AddWithValue("@Discontinued", Discontinued);
+                FindProductCmd.Parameters.AddWithValue("@UnitPrice", UnitPrice);
+                FindProductCmd.Parameters.AddWithValue("@QtyPerUnit", QuantityPerUnit);
+                FindProductCmd.Parameters.AddWithValue("@Unit", Unit);
                 dbconnect.Open();
 
                 using (SqlDataReader reader = FindProductCmd.ExecuteReader())
