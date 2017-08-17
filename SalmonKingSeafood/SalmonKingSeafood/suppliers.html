@@ -15,20 +15,26 @@
     <a href="index.html">Go Back</a>
     <div id="container-fluid">
         <div id="row">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <form id="supplier-form">
                     <div class="form-group">
                         <button type="submit" id="add-button" value="insert" class="btn btn-default">Add</button>
-                        <button type="submit" id="edit-button" value="update" class="btn btn-default">Edit</button>
+                        <!--<button type="submit" id="edit-button" value="update" class="btn btn-default">Edit</button>
                         <button type="submit" id="save-button" value="save" class="btn btn-default">Save</button>
                         <button type="submit" id="search-button" value="search" class="btn btn-default">Search</button>
-                        <button type="submit" id="delete-button" value="delete" class="btn btn-default">Delete</button>
+                        <button type="submit" id="delete-button" value="delete" class="btn btn-default">Delete</button>-->
                     </div>
                     <div class="form-group">
                         <label for="supplier" class="control-label">Supplier: </label>
                         <input type="text" id="supplier-name" class="form-control" placeholder="Supplier"/>
+
+                        <label for="payment" class="control-label">Payment: </label>
+                        <input type="text" id="payment" class="form-control" placeholder="Payment"/>
+
+                        <label for="note" class="control-label">Notes: </label>
+                        <input type="text" id="note" class="form-control" placeholder="Notes"/>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <h3>Location</h3>
                         <label for="address">Billing Address: </label>
                         <input type="text" id="billing-address" class="form-control" placeholder="Billing Address"/>
@@ -52,12 +58,6 @@
 
                         <label for="fax" class="control-label">Fax: </label>
                         <input type="text" id="fax" class="form-control" placeholder="Fax"/>
-
-                        <label for="note" class="control-label">Notes: </label>
-                        <input type="text" id="note" class="form-control" placeholder="Notes"/>
-
-                        <label for="payment" class="control-label">Payment: </label>
-                        <input type="text" id="payment" class="form-control" placeholder="Payment"/>
                     </div>
                     <div class="form-group">
                         <h3>Contact: </h3>
@@ -75,11 +75,11 @@
 
                         <label for="title" class="control-label">Title: </label>
                         <input type="text" id="title" class="form-control" placeholder="Title"/>
-                    </div>
+                    </div>-->
                 </form>
             </div>
             <div class="col-sm-6" id="report">
-                <table class="table"></table>                
+                <table class="table"></table>
             </div>
         </div>
     </div>
