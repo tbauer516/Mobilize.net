@@ -1,7 +1,8 @@
-﻿input, label {
-    width: 49%;
+﻿#customer-list, #product-list {
+    overflow-x: scroll;
 }
 
 table th, table td {
-
+    border: 1px solid black;
+    padding: 5px;
 }

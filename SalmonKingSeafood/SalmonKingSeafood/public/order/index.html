@@ -12,7 +12,8 @@
 
     <link href="../css/main.css" rel="stylesheet" type="text/css" />
     <link href="order.css" rel="stylesheet" type="text/css" />
-    <script defer src="js/app.js"></script>
+    <script defer src="../js/app.js"></script>
+    <script defer src="order.js"></script>
 </head>
 <body>
 
@@ -68,39 +69,53 @@
         </div>
     </nav>
     <div>
-        <form name="order" class="container-fluid">
-            <div class="row">
-                <div class="col-sm-12 col-lg-4">
-                    <label for="company-name" class="col-sm-6">Company Name:</label>
-                    <input name="company-name" type="text" />
+        <form name="search" class="container-fluid">
+            <div class="row mt-3">
+                <div class="col-sm-12 col-lg-4 row mb-2">
+                    <label for="company-name" class="col-sm-4">Company Name:</label>
+                    <input name="company-name" type="text" class="col-sm-8" />
                 </div>
 
-                <div class="col-sm-12 col-lg-4">
-                    <label for="contact-first-name" class="col-sm-6">Contact First Name:</label>
-                    <input type="text" />
+                <div class="col-sm-12 col-lg-4 row mb-2">
+                    <label for="contact-first-name" class="col-sm-4">Contact First Name:</label>
+                    <input name="contact-first-name" type="text" class="col-sm-8" />
                 </div>
 
-                <div class="col-sm-12 col-lg-4">
-                    <label for="contact-last-name" class="col-sm-6">Contact Last Name:</label>
-                    <input type="text" />
+                <div class="col-sm-12 col-lg-4 row mb-2">
+                    <label for="contact-last-name" class="col-sm-4">Contact Last Name:</label>
+                    <input name="contact-last-name" type="text" class="col-sm-8" />
                 </div>
             </div>
-
-            <hr />
-
-            <table>
-                <tr>
-                    <th>Customer ID</th>
-                    <th>Company Name</th>
-                    <th>Contact Name</th>
-                    <th>Contact Last Name</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Country</th>
-                </tr>
-            </table>
-
         </form>
+
+        <hr />
+
+        <div id="customer-list" class="container-fluid">
+            <table>
+            </table>
+        </div>
+
+        <hr />
+
+        <div class="container-fluid row">
+            <div class="col-sm-12 col-lg-6 row mb-2">
+                <label for="selected-company" class="col-sm-3">Selected Company:</label>
+                <input name="selected-company" type="text" class="col-sm-9" />
+            </div>
+
+            <div class="col-sm-12 col-lg-6 row mb-2">
+                <label for="selected-contact" class="col-sm-3">Selected Contact:</label>
+                <input name="selected-contact" type="text" class="col-sm-9" />
+            </div>
+        </div>
+
+        <hr />
+
+        <!-- Quantity, Code, Product, UnitPrice, Price, Existence, Ordered, Quantity Per -->
+        <div id="product-list" class="container-fluid">
+            <table></table>
+        </div>
+
     </div>
 </body>
 </html>

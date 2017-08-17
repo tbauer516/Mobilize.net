@@ -79,9 +79,12 @@
     <Content Include="public\css\main.css" />
     <Content Include="public\order\order.css" />
     <Content Include="public\order\index.html" />
+    <Content Include="public\order\order.js" />
     <Content Include="public\sqltest\index.html" />
     <Content Include="public\sqltest\sqltest.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="BackEnd.asmx" />
   </ItemGroup>
   <ItemGroup>
