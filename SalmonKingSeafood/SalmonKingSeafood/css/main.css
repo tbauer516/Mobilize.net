@@ -1,4 +1,9 @@
-﻿/*.dropdown-button {
+﻿#navbarToggler button {
+    border: none;
+    background-color: transparent;
+}
+
+/*.dropdown-button {
     padding: 8px;
     padding-left: 20px;
     border: none;
