@@ -82,9 +82,13 @@
     <Content Include="public\order\order.js" />
     <Content Include="public\sqltest\index.html" />
     <Content Include="public\sqltest\sqltest.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="public\product\product - Copy.html" />
+    <Content Include="public\product\product.css" />
+    <Content Include="public\product\product.html" />
+    <Content Include="public\product\product.js" />
+    <Content Include="supplier.js" />
+    <Content Include="suppliers.html" />
+    <Content Include="Web.config" />
     <Content Include="BackEnd.asmx" />
   </ItemGroup>
   <ItemGroup>
