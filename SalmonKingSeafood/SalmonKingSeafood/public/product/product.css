@@ -1,0 +1,14 @@
+﻿body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+button {
+    display: inline-block;
+}
+
+#hello {
+    clear: right;
+}
+
+input {
+    clear: both;
+}

@@ -76,7 +76,12 @@
   <ItemGroup>
     <Content Include="index.html" />
     <Content Include="public\app.js" />
+    <Content Include="public\img\hamburger.png" />
     <Content Include="public\main.css" />
+    <Content Include="public\product\product - Copy.html" />
+    <Content Include="public\product\product.css" />
+    <Content Include="public\product\product.html" />
+    <Content Include="public\product\product.js" />
     <Content Include="public\sqltest\index.html" />
     <Content Include="public\sqltest\sqltest.js" />
     <Content Include="supplier.js" />
