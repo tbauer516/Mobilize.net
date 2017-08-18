@@ -18,7 +18,7 @@
 <body>
 
     <!-- Update the .HTML files within the <a href> with the respective page once made -->
-    <nav class="navbar navbar-toggleable-sm navbar-light bg-faded">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -30,8 +30,8 @@
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="ddFile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">File</button>
                         <div class="dropdown-menu" aria-labelledby="ddFile">
-                            <a class="dropdown-item" href="customer.html">Manage Customers</a>
-                            <a class="dropdown-item" href="suppliers.html">Manage Suppliers</a>
+                            <a class="dropdown-item" href="/customer">Manage Customers</a>
+                            <a class="dropdown-item" href="/suppliers">Manage Suppliers</a>
                             <a class="dropdown-item" href="">Exit</a>
                         </div>
                     </div>
@@ -39,35 +39,36 @@
                 <li class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="ddOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Order</button>
                     <div class="dropdown-menu" aria-labelledby="ddOrder">
-                        <a class="dropdown-item" href="order">Create Order</a>
-                        <a class="dropdown-item" href="invoice.html">Create Invoice</a>
-                        <a class="dropdown-item" href="stock.html">Add Stock Order</a>
-                        <a class="dropdown-item" href="stock.html">Add Stock to Inventory</a>
+                        <a class="dropdown-item" href="/order">Create Order</a>
+                        <a class="dropdown-item" href="/invoice">Create Invoice</a>
+                        <a class="dropdown-item" href="/stock">Add Stock Order</a>
+                        <a class="dropdown-item" href="/stock">Add Stock to Inventory</a>
                     </div>
                 </li>
                 <li class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="ddInventory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Inventory</button>
                     <div class="dropdown-menu" aria-labelledby="ddInventory">
-                        <a class="dropdown-item" href="inventory.html">Inventory Update</a>
-                        <a class="dropdown-item" href="inventory.html">Inventory Adjust</a>
+                        <a class="dropdown-item" href="/inventory">Inventory Update</a>
+                        <a class="dropdown-item" href="/inventory">Inventory Adjust</a>
                     </div>
                 </li>
                 <li class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="ddMaintenance" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Maintenance</button>
                     <div class="dropdown-menu" aria-labelledby="ddMaintenance">
-                        <a class="dropdown-item" href="products.html">Manage Products</a>
-                        <a class="dropdown-item" href="users.html">Manage Users</a>
+                        <a class="dropdown-item" href="/products">Manage Products</a>
+                        <a class="dropdown-item" href="/users">Manage Users</a>
                     </div>
                 </li>
                 <li class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="ddHelp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</button>
                     <div class="dropdown-menu" aria-labelledby="ddHelp">
-                        <a class="dropdown-item" href="about.html">About</a>
+                        <a class="dropdown-item" href="/about">About</a>
                     </div>
                 </li>
             </ul>
         </div>
     </nav>
+
     <div>
         <form name="search" class="container-fluid">
             <div class="row mt-3">

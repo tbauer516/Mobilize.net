@@ -74,20 +74,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="public\index.html" />
-    <Content Include="public\js\app.js" />
-    <Content Include="public\css\main.css" />
-    <Content Include="public\order\order.css" />
-    <Content Include="public\order\index.html" />
-    <Content Include="public\order\order.js" />
-    <Content Include="public\sqltest\index.html" />
-    <Content Include="public\sqltest\sqltest.js" />
-    <Content Include="public\product\product - Copy.html" />
-    <Content Include="public\product\product.css" />
-    <Content Include="public\product\product.html" />
-    <Content Include="public\product\product.js" />
-    <Content Include="supplier.js" />
-    <Content Include="suppliers.html" />
+    <Content Include="index.html" />
+    <Content Include="js\app.js" />
+    <Content Include="css\main.css" />
+    <Content Include="order\order.css" />
+    <Content Include="order\index.html" />
+    <Content Include="order\order.js" />
+    <Content Include="sqltest\index.html" />
+    <Content Include="sqltest\sqltest.js" />
+    <Content Include="products\product - Copy.html" />
+    <Content Include="products\product.css" />
+    <Content Include="products\index.html" />
+    <Content Include="products\product.js" />
+    <Content Include="suppliers\supplier.js" />
+    <Content Include="suppliers\index.html" />
     <Content Include="Web.config" />
     <Content Include="BackEnd.asmx" />
   </ItemGroup>
