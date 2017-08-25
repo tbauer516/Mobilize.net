@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SalmonKingSeafood.BackEndUtils;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -337,6 +338,13 @@ namespace SalmonKingSeafood
                 //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
                 return new JavaScriptSerializer().Serialize(results);
             }
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string GetCustomers()
+        {
+            return Order.GetCustomers(Context);
         }
 
     }
