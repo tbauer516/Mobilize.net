@@ -32,21 +32,15 @@ const getProducts = () => {
 const getCustomers = () => {
     return fetch('/BackEnd.asmx/GetCustomers', request)
         .then(response => {
-            console.log(response);
             return response.json();
         })
         .then(data => {
-            console.log(data);
             return data.d;
         })
-        .catch(err => {
-            console.log(err);
-        })
         .then(data => {
-            let testDiv = document.querySelector('#sqltestdata');
             data = JSON.parse(data);
-            console.log(data[0]);
-            return data[0];
+            console.log(data);
+            return data;
         })
         .catch(err => {
             console.log(err);
@@ -165,7 +159,7 @@ const searchCustomers = () => {
 };
 
 $(() => {
-    mockCustomers()
+    getCustomers()
         .then(cust => {
             customerList = cust;
             searchCustomers();

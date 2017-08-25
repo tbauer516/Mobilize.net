@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Web;
@@ -16,7 +17,9 @@ namespace SalmonKingSeafood.BackEndUtils
                 var results = new List<Dictionary<string, object>>();
 
                 string cmdString = "" +
-                    "SELECT * FROM tblCUSTOMER cust " +
+                    "SELECT cust.CustomerID, cust.CompanyName, cont.FName ContactFirstName, " +
+                    "cont.LName ContactLastName, loc.City, loc.State, loc.Country " +
+                    "FROM tblCUSTOMER cust " +
                     "JOIN tblCONTACT cont ON cont.ContactID = cust.ContactID " +
                     "JOIN tblLOCATION loc ON loc.LocationID = cont.LocationID";
 
@@ -46,6 +49,33 @@ namespace SalmonKingSeafood.BackEndUtils
                 Context.Response.Clear();
                 Context.Response.ContentType = "application/json";
                 //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
+                return new JavaScriptSerializer().Serialize(results);
+            }
+        }
+
+        public static void PlaceOrder(HttpContext Context, Dictionary<string, object> Ids)
+        {
+            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
+            {
+                var results = new List<Dictionary<string, object>>();
+
+                string cmdString = "EXEC ";
+
+                SqlCommand testCmd = new SqlCommand(cmdString, dbconnect);
+                //testCmd.Parameters.AddWithValue("@tableType", "BASE TABLE");
+                dbconnect.Open();
+
+                using (SqlDataReader reader = testCmd.ExecuteReader())
+                {
+                    
+                }
+
+                dbconnect.Close();
+
+                Context.Response.Clear();
+                Context.Response.ContentType = "application/json";
+                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
+                System.Diagnostics.Debug.WriteLine(results);
                 return new JavaScriptSerializer().Serialize(results);
             }
         }

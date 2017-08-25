@@ -347,6 +347,13 @@ namespace SalmonKingSeafood
             return Order.GetCustomers(Context);
         }
 
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string PlaceOrder()
+        {
+            return Order.GetCustomers(Context);
+        }
+
     }
 
 }
