@@ -1,8 +1,10 @@
 ﻿body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
 button {
     display: inline-block;
+
 }
 
 #hello {
@@ -11,4 +13,21 @@ button {
 
 input {
     clear: both;
+}
+
+#output {
+    overflow-x:scroll;
+}
+
+table {
+    border-collapse: collapse;
+    min-width: 100%;
+}
+
+table, th, td, tr {
+    border: 1px solid black;
+}
+
+th, tb, tr {
+    min-height: 50px;
 }

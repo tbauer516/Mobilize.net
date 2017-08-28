@@ -12,6 +12,7 @@
         mode: 'cors'
     };
 
+    // Submits a request for all products and displays the data in a table.
     function getProductInfo() {
         return fetch('/BackEnd.asmx/SQLViewProduct', request)
             .then(response => {
@@ -22,17 +23,23 @@
             })
             .then(data => {
                 var json = JSON.parse(data);
-                console.log(json);
+//                console.log(json); // For debug
+                createTable();
+                fillTable(json);
             })
             .catch(err => {
                 console.log(err);
             })
     };
 
+    // Adds a new prduct via asmx sql call
     $("#add").click(function (event) {
+        formData = [$("#pcode").val(), $("#pname").val(), $("#pdescr").val(), $("#pcategory").val(), $("#pserial").val(), $("#pdiscontinued").val(),
+        $("#punitprice").val(), $("#pquantity").val(), $("#punit").val()]
         var json = {
-            product: data
+            product: formData
         };
+        console.log(json);
         $.ajax({
             method: 'POST',
             url: "/BackEnd.asmx/AddProduct",
@@ -64,21 +71,45 @@
 
     });
 
-
+    // Create the product table with column headers. 
     function createTable() {
-        var table = $("table");
-
+        var productInfo = ["ProductName", "ProductCode", "ProductDescr", "ProductType", "ProductSerialNumber", "ProductCode",  "Discontinued", "UnitPrice", "Qty", "unit"];
+        var table = $(".table");
+        var tbody = document.createElement("tbody");
+        tbody.id = "tbody";
+        var thead = document.createElement("thead");
+        var row = thead.insertRow(0);
+        for (var i = 0; i < productInfo.length; i++) {
+            var td = document.createElement("td");
+            td.textContent = productInfo[i];
+            row.append(td);
+        }
+        thead.append(row);
+        table.append(thead);
+        table.append(tbody);
+        
     }
 
-    function fillTable() {
-
+    // Fills the output table with json data
+    function fillTable(json) {
+        var tbody = $("#tbody");
+//        console.log(tbody);  // For debug
+        $.each(json, function (i, row) {
+            var tr = document.createElement("tr");
+            $.each(row, function (j, rowData) {
+                var td = document.createElement("td");
+                td.textContent = rowData;
+                tr.append(td);
+            });
+//            console.log(tr); // For debug
+            tbody.append(tr);
+        }); 
     }
     
 
     $(window).ready(function () {
         $("form").submit(function (event) {
-            formData = [$("#pcode").val(), $("#pname").val(), $("#pdescr").val(), $("#pcategory").val(), $("#pserial").val(), $("#pdiscontinued").val(),
-                        $("#pdiscontinued").val(), $("#punitprice").val(), $("#pdiscontinued").val(), $("#pquantity").val(), $("#punit").val()]
+            
         });
         getProductInfo();
     });
