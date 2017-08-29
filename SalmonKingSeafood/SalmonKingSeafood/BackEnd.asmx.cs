@@ -245,95 +245,17 @@ namespace SalmonKingSeafood
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
-                // var results = new Dictionary<string, object>();
-                var results = new List<Dictionary<string, object>>();
-                String[] productInfo = { "ProductName", "ProductCode", "ProductDescr", "ProductCategory", "ProductSerialNumber", "Discontinued", "UnitPrice", "QtyPerUnit" };
-                string cmdString = "exec uspInsertProduct @" + productInfo[0] + " = " + data[0];
-                for (var i = 1; i < data.Length; i++)
-                {
-                    cmdString += ", @" + productInfo[i] + " = " + data[i];
-                }
-                SqlCommand addProductCmd = new SqlCommand(cmdString, dbconnect);
-                for (var i = 0; i < data.Length; i++)
-                {
-                    addProductCmd.Parameters.AddWithValue(productInfo[i], data[i]);
-                }
-                dbconnect.Open();
-
-                using (SqlDataReader reader = addProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-
-                dbconnect.Close();
-
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
-                return new JavaScriptSerializer().Serialize(results);
+             
             }
         }
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string SQLFindProduct(string ProductName, string ProductCode, string SerialNumber, string Discontinued, string UnitPrice, string QuantityPerUnit, string Unit)
+        public string SQLFindProduct(String)
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
-                // var results = new Dictionary<string, object>();
-                var results = new List<Dictionary<string, object>>();
-
-                string cmdString = "SELECT * FROM tblPRODUCT WHERE " +
-                                   "(ProductName = @ProductName OR ProductName LIKE '%')" +
-                                   "AND (ProductCode = @ProductCode OR ProductCode LIKE '%')" +
-                                   "AND (SerialNumber = @SerialNumber OR SerialNumber LIKE '%')" +
-                                   "AND (Discontinued = @Discontinued OR Discontinued LIKE '%')" +
-                                   "AND (UnitPrice = @UnitPrice OR UnitPrice LIKE '%')" +
-                                   "AND (QuantityPerUnit = @QuantityPerUnit OR QuantityPerUnit LIKE '%')" +
-                                   "AND (Unit = @Unit OR Unit LIKE '%')";
-                SqlCommand FindProductCmd = new SqlCommand(cmdString, dbconnect);
-                FindProductCmd.Parameters.AddWithValue("@ProductName", ProductName);
-                FindProductCmd.Parameters.AddWithValue("@ProductCode", ProductCode);
-                FindProductCmd.Parameters.AddWithValue("@SerialNumber", SerialNumber);
-                FindProductCmd.Parameters.AddWithValue("@Discontinued", Discontinued);
-                FindProductCmd.Parameters.AddWithValue("@UnitPrice", UnitPrice);
-                FindProductCmd.Parameters.AddWithValue("@QtyPerUnit", QuantityPerUnit);
-                FindProductCmd.Parameters.AddWithValue("@Unit", Unit);
-                dbconnect.Open();
-
-                using (SqlDataReader reader = FindProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-
-                dbconnect.Close();
-
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
-                return new JavaScriptSerializer().Serialize(results);
+             
             }
         }
 
@@ -344,32 +266,7 @@ namespace SalmonKingSeafood
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
-                // var results = new Dictionary<string, object>();
-                var results = new List<Dictionary<string, object>>();
-
-                string cmdString = "SELECT * FROM tblPRODUCT";
-                SqlCommand FindProductCmd = new SqlCommand(cmdString, dbconnect);
-                dbconnect.Open();
-
-                using (SqlDataReader reader = FindProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-                dbconnect.Close();
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                return new JavaScriptSerializer().Serialize(results);
+               
             }
         }
 
