@@ -121,7 +121,7 @@
 
         <hr />
 
-        <form name="tax" class="container-fluid">
+        <form name="tax" class="container-fluid" onsubmit="return false;">
             <div class="row mt-3">
                 <div class="col-sm-12 col-lg-6 row mb-2">
                     <label for="sales-tax" class="col-sm-3">Sales Tax:</label>
@@ -142,6 +142,9 @@
                     <label for="total" class="col-sm-3">Total:</label>
                     <input name="total" type="number" class="col-sm-9" readonly />
                 </div>
+            </div>
+            <div class="row mt-3">
+                <button class="btn btn-submit" type="submit" name="formSubmit">Submit</button>
             </div>
         </form>
 

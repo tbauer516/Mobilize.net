@@ -11,6 +11,36 @@
     };
 };
 
+const requestObject = {
+    headers: {
+        'Content-Type': 'application/json; charset=utf-8'
+    },
+    method: 'get',
+    credentials: 'include',
+    mode: 'cors'
+};
+
+const makeRequest = (funcName, data) => {
+    let request = JSON.parse(JSON.stringify(requestObject));
+
+    if (data) {
+        request.body = JSON.stringify(data);
+    }
+
+    return fetch('/BackEnd.asmx/' + funcName, request)
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            data = JSON.parse(data.d);
+            console.log(data);
+            return data;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 const mockData = () => {
     const data = [{
         Quantity: 0,
@@ -26,25 +56,11 @@ const mockData = () => {
 };
 
 const getProducts = () => {
-
+    return makeRequest('GetProducts');
 };
 
 const getCustomers = () => {
-    return fetch('/BackEnd.asmx/GetCustomers', request)
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            return data.d;
-        })
-        .then(data => {
-            data = JSON.parse(data);
-            console.log(data);
-            return data;
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    return makeRequest('GetCustomers');
 };
 
 const mockCustomers = () => {
@@ -122,7 +138,7 @@ const setSelected = (index) => {
     selectedContact.val(customerList[index].ContactFirstName + ' ' + customerList[index].ContactLastName);
 };
 
-const queryProducts = () => {
+const searchProducts = () => {
     productHtml.empty();
     productHtml.append(productHeaders);
     
@@ -130,10 +146,22 @@ const queryProducts = () => {
         let newRow = $('<tr>');
         newRow.append('<td><input name="select-product" type="checkbox" id=' + i + ' value=' + i + ' /></td>');
         for (let j = 0; j < productFormat.length; j++) {
-            newRow.append('<td>' + productList[i][productFormat[j]] + '</td>');
+            if (productFormat[j] === 'Quantity') {
+                let quantityInput = $('<td><input type="number" name="quantity' + i + '" value=0 /></td>');
+                quantityInput.on('input', (e) => {
+                    let row = newRow.children('td');
+                    row[5].innerHTML = (e.target.value * row[4].innerHTML);
+                });
+                newRow.append(quantityInput);
+            } else
+                newRow.append('<td>' + productList[i][productFormat[j]] + '</td>');
         }
         productHtml.append(newRow);
     }
+    $('#product-list input[type=checkbox]').on('click', (event) => {
+        console.log(event.target.value);
+        //setSelected(event.target.value);
+    });
 };
 
 const searchCustomers = () => {
@@ -154,7 +182,7 @@ const searchCustomers = () => {
     $('#customer-list input[type=radio]').on('click', (event) => {
         console.log(event.target.value);
         setSelected(event.target.value);
-        queryProducts();
+        searchProducts();
     });
 };
 
@@ -168,10 +196,17 @@ $(() => {
             console.log(err);
         });
 
-    mockData()
+    getProducts()
         .then(data => {
+            productList = [];
+            for (let i = 0; i < data.length; i++) {
+                data[i].Quantity = 0;
+                data[i].Price = 0;
+                data[i].Existence = 0;
+                data[i].Ordered = 0;
+            }
             productList = data;
-            queryProducts();
+            searchProducts();
         })
         .catch(err => {
             console.log(err);
@@ -179,42 +214,24 @@ $(() => {
 });
 
 $('form[name=search] input').on('input', debounce(searchCustomers, 300));
-$(() => {
-    getCustomers();
-    getProducts();
+
+$('form[name=tax]').on('submit', (event) => {
+    let orderData = {};
+    orderData.customerID = customerList[$('#customer-list input[type=radio]:checked').val()].CustomerID;
+
+    orderData.products = [];
+    let productsSelected = $('#product-list input[type=checkbox]:checked');
+    let productsRow = $('#product-list table tr');
+    for (let i = 0; i < productsSelected.length; i++) {
+        let index = parseInt(productsSelected.eq(i).val());
+        let productID = productList[index].ProductID;
+        let productQuantity = parseInt($(productsRow[index + 1]).find('input[type=number]').val());
+        orderData.products.push({ id: productID, quantity: productQuantity });
+    }
+
+    console.log(orderData);
+
+    event.preventDefault();
+    event.returnValue = false;
+    return false;
 });
-
-// Test code below here
-
-const request = {
-    headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-    },
-    method: 'get',
-    credentials: 'include',
-    mode: 'cors'
-};
-
-const getTestSql = () => {
-    return fetch('/BackEnd.asmx/SQLTest', request)
-        .then(response => {
-            console.log(response);
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            return data.d;
-        })
-        .catch(err => {
-            console.log(err);
-        })
-        .then(data => {
-            let testDiv = document.querySelector('#sqltestdata');
-            data = JSON.parse(data);
-            console.log(data[0]);
-            return data[0];
-        })
-        .catch(err => {
-            console.log(err);
-        });
-};

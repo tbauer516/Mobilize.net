@@ -349,9 +349,17 @@ namespace SalmonKingSeafood
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string PlaceOrder()
+        public string GetProducts()
         {
-            return Order.GetCustomers(Context);
+            return Order.GetProducts(Context, 1);
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string PlaceOrder(string data)
+        {
+            List<Dictionary<string, object>> products = new JavaScriptSerializer().Deserialize<List<Dictionary<string, object>>>(data);
+            return Order.PlaceOrder(Context, products);
         }
 
     }
