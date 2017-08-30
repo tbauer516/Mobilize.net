@@ -1,4 +1,6 @@
-﻿using SalmonKingSeafood.BackEndUtils;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SalmonKingSeafood.BackEndUtils;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -355,11 +357,10 @@ namespace SalmonKingSeafood
         }
 
         [WebMethod]
-        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string PlaceOrder(string data)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string CreateOrder(int customerID, List<object> products)
         {
-            List<Dictionary<string, object>> products = new JavaScriptSerializer().Deserialize<List<Dictionary<string, object>>>(data);
-            return Order.PlaceOrder(Context, products);
+            return Order.CreateOrder(Context, customerID, products);
         }
 
     }

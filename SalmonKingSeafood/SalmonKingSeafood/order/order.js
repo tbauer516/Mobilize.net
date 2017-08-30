@@ -15,7 +15,7 @@ const requestObject = {
     headers: {
         'Content-Type': 'application/json; charset=utf-8'
     },
-    method: 'get',
+    method: 'GET',
     credentials: 'include',
     mode: 'cors'
 };
@@ -25,6 +25,9 @@ const makeRequest = (funcName, data) => {
 
     if (data) {
         request.body = JSON.stringify(data);
+        //let dataContainer = new FormData();
+        //dataContainer.append("data", JSON.stringify(data));
+        request.method = 'POST';
     }
 
     return fetch('/BackEnd.asmx/' + funcName, request)
@@ -32,7 +35,10 @@ const makeRequest = (funcName, data) => {
             return response.json();
         })
         .then(data => {
-            data = JSON.parse(data.d);
+            console.log(data);
+            if (data.d)
+                data = data.d;
+            data = JSON.parse(data);
             console.log(data);
             return data;
         })
@@ -119,6 +125,8 @@ const productHtml = $('#product-list table');
 const selectedCompany = $('input[name=selected-company]');
 const selectedContact = $('input[name=selected-contact]');
 
+const returnStatus = { success: "Completed", fail: "Failed" };
+
 const customerSearchInputs = {
     CompanyName: $('form[name=search] input[name=company-name'),
     ContactFirstName: $('form[name=search] input[name=contact-first-name'),
@@ -182,7 +190,7 @@ const searchCustomers = () => {
     $('#customer-list input[type=radio]').on('click', (event) => {
         console.log(event.target.value);
         setSelected(event.target.value);
-        searchProducts();
+        //searchProducts();
     });
 };
 
@@ -230,6 +238,13 @@ $('form[name=tax]').on('submit', (event) => {
     }
 
     console.log(orderData);
+    makeRequest('CreateOrder', orderData)
+        .then(data => {
+            if (data.ReturnValue == returnStatus.success)
+                alert("Order Created!");
+            else
+                alert("Order Failed!");
+        });
 
     event.preventDefault();
     event.returnValue = false;

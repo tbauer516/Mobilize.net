@@ -94,41 +94,55 @@ namespace SalmonKingSeafood.BackEndUtils
             }
         }
 
-        public static string PlaceOrder(HttpContext Context, List<Dictionary<string, object>> LineItems)
+        public static string CreateOrder(HttpContext Context, int CustomerID, List<object> LineItems)
         {
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
-                string cmdString = "EXEC uspAddLineItem(@prodID, @custID, @quantity, @datetime)";
+                string cmdString = "uspAddLineItem";
                 string CurrentDateTime = DateTime.Now.ToString();
+
+                Dictionary<string, string> returnStatus = new Dictionary<string, string>();
+                returnStatus.Add("ReturnValue", "Completed");
 
                 dbconnect.Open();
 
-                foreach (Dictionary<string, object> product in LineItems)
+                using (SqlTransaction dbTrans = dbconnect.BeginTransaction())
                 {
-                    SqlCommand AddProductCmd = new SqlCommand(cmdString, dbconnect);
-                    AddProductCmd.Parameters.AddWithValue("@prodID", product["ProductID"]);
-                    AddProductCmd.Parameters.AddWithValue("@custID", product["CustomerID"]);
-                    AddProductCmd.Parameters.AddWithValue("@quantity", product["Quantity"]);
-                    AddProductCmd.Parameters.AddWithValue("@datetime", CurrentDateTime);
-
                     try
                     {
-                        AddProductCmd.ExecuteNonQuery();
+                        foreach (Dictionary<string, object> product in LineItems)
+                        {
+                            using (SqlCommand AddProductCmd = new SqlCommand(cmdString, dbconnect))
+                            {
+                                AddProductCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                                AddProductCmd.Transaction = dbTrans;
+
+                                AddProductCmd.Parameters.AddWithValue("@ProductID", (int)product["id"]);
+                                AddProductCmd.Parameters.AddWithValue("@CustomerID", CustomerID);
+                                AddProductCmd.Parameters.AddWithValue("@QuantityOrdered", (int)product["quantity"]);
+                                AddProductCmd.Parameters.AddWithValue("@OrderDate", CurrentDateTime);
+
+                                AddProductCmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        dbTrans.Commit();
                     }
-                    catch (Exception e)
+                    catch (SqlException)
                     {
-                        System.Diagnostics.Debug.WriteLine(e);
+                        dbTrans.Rollback();
+                        returnStatus["ReturnValue"] = "Failed";
+                        throw; // bubble up the exception and preserve the stack trace
                     }
                 }
-                
+
                 dbconnect.Close();
 
                 Context.Response.Clear();
                 Context.Response.ContentType = "application/json";
                 //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
                 //System.Diagnostics.Debug.WriteLine(results);
-                //return new JavaScriptSerializer().Serialize(results);
-                return "Completed";
+                return new JavaScriptSerializer().Serialize(returnStatus);
             }
         }
     }
