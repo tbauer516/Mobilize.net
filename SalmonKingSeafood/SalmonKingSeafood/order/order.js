@@ -25,8 +25,6 @@ const makeRequest = (funcName, data) => {
 
     if (data) {
         request.body = JSON.stringify(data);
-        //let dataContainer = new FormData();
-        //dataContainer.append("data", JSON.stringify(data));
         request.method = 'POST';
     }
 
@@ -35,30 +33,14 @@ const makeRequest = (funcName, data) => {
             return response.json();
         })
         .then(data => {
-            console.log(data);
             if (data.d)
                 data = data.d;
             data = JSON.parse(data);
-            console.log(data);
             return data;
         })
         .catch(err => {
             console.log(err);
         });
-};
-
-const mockData = () => {
-    const data = [{
-        Quantity: 0,
-        Code: 'XYZ',
-        Product: 'Salmon',
-        UnitPrice: 25.0,
-        Price: 0.0,
-        Existence: 'Yes',
-        Ordered: 0.0,
-        QuantityPer: 3
-    }];
-    return Promise.resolve(data);
 };
 
 const getProducts = () => {
@@ -69,28 +51,8 @@ const getCustomers = () => {
     return makeRequest('GetCustomers');
 };
 
-const mockCustomers = () => {
-    const customers = [
-        {
-            CustomerID: 1,
-            CompanyName: 'TestCompany',
-            ContactFirstName: 'Jane',
-            ContactLastName: 'Doe',
-            City: 'Nowhere',
-            State: 'Washington',
-            Country: 'US'
-        },
-        {
-            CustomerID: 2,
-            CompanyName: 'OtherCompany',
-            ContactFirstName: 'John',
-            ContactLastName: 'Dun',
-            City: 'Everywhere',
-            State: 'Oregon',
-            Country: 'US'
-        }
-    ];
-    return Promise.resolve(customers);
+const getTax = () => {
+    return makeRequest('GetTax');
 };
 
 const customerFormat = [
@@ -126,6 +88,12 @@ const selectedCompany = $('input[name=selected-company]');
 const selectedContact = $('input[name=selected-contact]');
 
 const returnStatus = { success: "Completed", fail: "Failed" };
+let orderSuccess = false;
+
+let currentOrderData = {customerID: undefined, products: []};
+
+let currentSalesTax = 0.1;
+let currentShipping = 15;
 
 const customerSearchInputs = {
     CompanyName: $('form[name=search] input[name=company-name'),
@@ -159,6 +127,7 @@ const searchProducts = () => {
                 quantityInput.on('input', (e) => {
                     let row = newRow.children('td');
                     row[5].innerHTML = (e.target.value * row[4].innerHTML);
+                    updateOrderData();
                 });
                 newRow.append(quantityInput);
             } else
@@ -167,13 +136,11 @@ const searchProducts = () => {
         productHtml.append(newRow);
     }
     $('#product-list input[type=checkbox]').on('click', (event) => {
-        console.log(event.target.value);
-        //setSelected(event.target.value);
+        updateOrderData();
     });
 };
 
 const searchCustomers = () => {
-    console.log(customerList);
     customerHtml.empty();
     customerHtml.append(customerHeaders);
 
@@ -188,11 +155,68 @@ const searchCustomers = () => {
         }
     }
     $('#customer-list input[type=radio]').on('click', (event) => {
-        console.log(event.target.value);
         setSelected(event.target.value);
-        //searchProducts();
+        updateOrderData();
     });
 };
+
+const resetForm = () => {
+    if (orderSuccess) {
+        $('input').val('');
+        $('input:checked').prop('checked', false);
+        $('input[type=number]').val('0.00');
+        productHtml.find('input[type=number]').val('0');
+        $('input[type=number]').trigger('input');
+    }
+};
+
+const updateOrderData = () => {
+    let orderData = {};
+    try {
+        orderData.customerID = customerList[$('#customer-list input[type=radio]:checked').val()].CustomerID;
+    } catch (e) {
+        orderData.customerID = undefined;
+    }
+
+    orderData.products = [];
+    let productsSelected = $('#product-list input[type=checkbox]:checked');
+    let productsRow = $('#product-list table tr');
+    for (let i = 0; i < productsSelected.length; i++) {
+        let index = parseInt(productsSelected.eq(i).val());
+        let productID = productList[index].ProductID;
+        let productQuantity = parseInt($(productsRow[index + 1]).find('input[type=number]').val());
+        orderData.products.push({ id: productID, quantity: productQuantity });
+    }
+
+    currentOrderData = orderData;
+    updateTotals();
+};
+
+const findProductById = (id) => {
+    for (let i = 0; i < productList.length; i++) {
+        if (productList[i].ProductID === id)
+            return productList[i];
+    }
+    return undefined;
+};
+
+const updateTotals = () => {
+    $('input[name=sales-tax]').val(currentSalesTax.toFixed(2));
+    $('input[name=shipping]').val(currentShipping.toFixed(2));
+    let subTotal = currentOrderData.products.reduce((total, productCart) => {
+        let product = findProductById(productCart.id);
+        return total + (product.UnitPrice * productCart.quantity);
+    }, 0);
+    $('input[name=sub-total]').val(subTotal.toFixed(2));
+    $('input[name=total]').val((((1 + currentSalesTax) * subTotal) + currentShipping).toFixed(2));
+};
+
+const showModal = (title, body, success = false) => {
+    $('.modal-title').html(title);
+    $('.modal-body').html(body);
+    orderSuccess = success;
+    $('#ajaxStatus').modal('show');
+}
 
 $(() => {
     getCustomers()
@@ -224,29 +248,31 @@ $(() => {
 $('form[name=search] input').on('input', debounce(searchCustomers, 300));
 
 $('form[name=tax]').on('submit', (event) => {
-    let orderData = {};
-    orderData.customerID = customerList[$('#customer-list input[type=radio]:checked').val()].CustomerID;
-
-    orderData.products = [];
-    let productsSelected = $('#product-list input[type=checkbox]:checked');
-    let productsRow = $('#product-list table tr');
-    for (let i = 0; i < productsSelected.length; i++) {
-        let index = parseInt(productsSelected.eq(i).val());
-        let productID = productList[index].ProductID;
-        let productQuantity = parseInt($(productsRow[index + 1]).find('input[type=number]').val());
-        orderData.products.push({ id: productID, quantity: productQuantity });
-    }
-
-    console.log(orderData);
-    makeRequest('CreateOrder', orderData)
-        .then(data => {
-            if (data.ReturnValue == returnStatus.success)
-                alert("Order Created!");
-            else
-                alert("Order Failed!");
-        });
-
     event.preventDefault();
     event.returnValue = false;
+
+    let orderData = currentOrderData;
+
+    if (!orderData.customerID) {
+        showModal('Order: Failed!', 'Please make sure you select a customer first!', false);
+        return false;
+    }
+
+    if (orderData.products.length == 0) {
+        showModal('Order: Failed!', 'Please make sure you select at least one product!', false);
+        return false;
+    }
+
+    makeRequest('CreateOrder', orderData)
+        .then(data => {
+            if (data.ReturnValue == returnStatus.success) {
+                showModal('Order: Completed!', 'We will clear the form for you so you don\'t accidentally make another order.', true);
+            } else {
+                showModal('Order: Failed!', 'Something went wrong! Please try again!', false);
+            }
+        });
+
     return false;
 });
+
+$('#ajaxStatus').on('hide.bs.modal', resetForm);

@@ -357,6 +357,13 @@ namespace SalmonKingSeafood
         }
 
         [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public string GetTax()
+        {
+            return Order.GetTax(Context);
+        }
+
+        [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string CreateOrder(int customerID, List<object> products)
         {
