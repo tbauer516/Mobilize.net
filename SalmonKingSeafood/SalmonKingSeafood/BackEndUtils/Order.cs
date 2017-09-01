@@ -102,11 +102,11 @@ namespace SalmonKingSeafood.BackEndUtils
                 var results = new List<Dictionary<string, object>>();
 
                 string cmdString = "" +
-                    "SELECT prod.ProductCode Code, prod.ProductName Product, prod.UnitPrice, prod.QuantityPerUnit QuantityPer, prod.ProductID " +
-                    "FROM tblPRODUCT prod";
+                    "SELECT TOP 1 TaxPercent " +
+                    "FROM tblTAX " +
+                    "ORDER BY TaxID DESC";
 
                 SqlCommand GetProductsCmd = new SqlCommand(cmdString, dbconnect);
-                //GetProductsCmd.Parameters.AddWithValue("@CustomerID", CustomerID);
                 dbconnect.Open();
 
                 using (SqlDataReader reader = GetProductsCmd.ExecuteReader())

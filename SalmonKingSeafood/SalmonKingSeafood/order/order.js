@@ -92,7 +92,7 @@ let orderSuccess = false;
 
 let currentOrderData = {customerID: undefined, products: []};
 
-let currentSalesTax = 0.1;
+let currentSalesTax;
 let currentShipping = 15;
 
 const customerSearchInputs = {
@@ -219,7 +219,7 @@ const showModal = (title, body, success = false) => {
 }
 
 $(() => {
-    getCustomers()
+    let custProm = getCustomers()
         .then(cust => {
             customerList = cust;
             searchCustomers();
@@ -228,7 +228,7 @@ $(() => {
             console.log(err);
         });
 
-    getProducts()
+    let prodProm = getProducts()
         .then(data => {
             productList = [];
             for (let i = 0; i < data.length; i++) {
@@ -242,6 +242,19 @@ $(() => {
         })
         .catch(err => {
             console.log(err);
+        });
+
+    let taxProm = getTax()
+        .then(data => {
+            currentSalesTax = data[0].TaxPercent;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+    Promise.all([custProm, prodProm, taxProm])
+        .then(() => {
+            updateTotals();
         });
 });
 
