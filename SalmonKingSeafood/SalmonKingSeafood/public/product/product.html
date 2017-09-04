@@ -10,24 +10,21 @@
 </head>
 <body>
     <h1>Products</h1>
-   
 
     <h2>Product Information</h2>
-    <form id="form" method="get" action="">
-        <button type="submit" id="add">Add</button>
-        <button type="submit" id="edit">Edit</button>
-        <button type="submit" id="save">Save</button>
-        <button type="submit" id="delete">Delete</button>
-        <button type="submit" id="search">Search</button>
-        <button type="submit" id="hello">hello</button>
-        Product Code: 
-        <input type="text" id="pcode" name="pcode" placeholder="T" required /><br />
+    <form id="form">
+        <button type="submit" value="Insert">Add</button>
+        <button type="submit" value="Update">Edit</button>
+        <button type="submit" value="Delete">Delete</button>
+        <button type="submit" value="Search">Search</button><br />
         Product Name:
-        <input type="text" id="pname" name="pname" placeholder="Tuna" required /><br />
+        <input type="text" id="pname" name="pname" placeholder="Tuna"  /><br />
+        Product Code:
+        <input type="text" id="pcode" name="pcode" placeholder="12345" /><br />
         Description:
         <input type="text" id="pdescr" name="pdescr" placeholder="Delicious fish" /><br />
-        Category:
-        <select id="pcategory" name="pcategory"  required>
+        Type
+        <select id="ptype" name="ptype"  >
             <option value="Fish">Fish</option>
             <option value="Crab">Crab</option>
             <option value="Oyster">Oyster</option>
@@ -39,15 +36,15 @@
         </select>
         <br />
         Serial Number:
-        <input type="text" id="pserial" name="pserial" placeholder="12345" required /><br />
+        <input type="text" id="pserial" name="pserial" placeholder="12345"  /><br />
         Discontinued:
-        <input type="checkbox" id="pdiscontinued" name="pdiscontinued" /><br />
+        <input type="date" id="pdiscontinued" name="pdiscontinued" placeholder="2017-09-02"/><br />
         Unit Price: 
-        <input type="number" id="punitprice" name="punitprice" placeholder="30.00"  required/><br />
+        <input type="number" id="punitprice" name="punitprice" placeholder="30.00"  /><br />
         Quantity per unit: 
-        <input type="number" id="pquantity" name="pquantity" placeholder="25"  required/><br />
+        <input type="number" id="pquantity" name="pquantity" placeholder="25"  /><br />
         Units:
-        <input type="text" id="punit" name="punit" placeholder="10"  required/><br />
+        <input type="text" id="punit" name="punit" placeholder="10"  /><br />
     </form>
     <h2>Output:</h2>
     <div id="output">

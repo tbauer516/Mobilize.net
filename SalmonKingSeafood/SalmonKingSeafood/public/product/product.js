@@ -1,7 +1,24 @@
 (function () {
     "use strict";
 
-    var formData;
+    var buttonValue;
+
+    $(window).ready(function () {
+        createTable();
+        getProductInfo();
+        $("#form button").click(function (event) {
+            buttonValue = $(this).val();
+        });
+        $("#form").submit(function (event) {
+            event.preventDefault();
+            if (buttonValue == "Search") {
+                getProductInfo();
+            } else {
+                formSubmit(event);
+            }
+        });
+
+    });
 
     const request = {
         headers: {
@@ -24,7 +41,7 @@
             .then(data => {
                 var json = JSON.parse(data);
 //                console.log(json); // For debug
-                createTable();
+                
                 fillTable(json);
             })
             .catch(err => {
@@ -32,48 +49,45 @@
             })
     };
 
-    // Adds a new prduct via asmx sql call
-    $("#add").click(function (event) {
-        formData = [$("#pcode").val(), $("#pname").val(), $("#pdescr").val(), $("#pcategory").val(), $("#pserial").val(), $("#pdiscontinued").val(),
-        $("#punitprice").val(), $("#pquantity").val(), $("#punit").val()]
+    
+   
+
+    function formSubmit(event) {
+        var formData;
+        var productInfo;
+        if (buttonValue != "Delete") {
+            formData = [buttonValue, $("#pname").val(), $("#pdescr").val(), $("#ptype").val(), $("#pcode").val(), $("#pserial").val(), $("#pdiscontinued").val(),
+                $("#punitprice").val(), $("#pquantity").val(), $("#punit").val()];
+            productInfo = ["ProductName", "ProductDesc", "ProductTypeName", "ProductCode", "SerialNumber", "Discontinued", "UnitPrice", "QuantityPerUnit", "Unit"];
+        } else {
+            formData = [buttonValue, $("#pname").val()];
+            productInfo = ["ProductName"]
+        }
+        
         var json = {
-            product: formData
+            data: formData,
+            info: productInfo
         };
         console.log(json);
         $.ajax({
             method: 'POST',
-            url: "/BackEnd.asmx/AddProduct",
+            url: "/BackEnd.asmx/ProductSQL",
             contentType: "application/json; charset=utf-8",
             dataType: 'json',
             data: JSON.stringify(json),
             success: function (response) {
-                console.log(response);
+                getProductInfo();
             },
             error: function (response) {
                 console.log(response);
+                console.log(response.responseText);
             }
         });
-    });
-
-    $("#edit").click(function (event) {
-
-    });
-
-    $("#save").click(function (event) {
-
-    });
-
-    $("#delete").click(function (event) {
-
-    });
-
-    $("#search").click(function (event) {
-
-    });
+    }
 
     // Create the product table with column headers. 
     function createTable() {
-        var productInfo = ["ProductName", "ProductCode", "ProductDescr", "ProductType", "ProductSerialNumber", "ProductCode",  "Discontinued", "UnitPrice", "Qty", "unit"];
+        var productInfo = ["ProductID", "ProductName", "ProductDescr", "ProductType", "ProductCode", "ProductSerialNumber",  "Discontinued", "UnitPrice", "Qty", "unit"];
         var table = $(".table");
         var tbody = document.createElement("tbody");
         tbody.id = "tbody";
@@ -93,6 +107,7 @@
     // Fills the output table with json data
     function fillTable(json) {
         var tbody = $("#tbody");
+        tbody.find("tr").remove();
 //        console.log(tbody);  // For debug
         $.each(json, function (i, row) {
             var tr = document.createElement("tr");
@@ -105,14 +120,6 @@
             tbody.append(tr);
         }); 
     }
-    
-
-    $(window).ready(function () {
-        $("form").submit(function (event) {
-            
-        });
-        getProductInfo();
-    });
     
 })();
 
