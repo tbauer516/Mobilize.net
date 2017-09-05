@@ -76,7 +76,7 @@ namespace SalmonKingSeafood
         public string ViewSupplier()
         {
             Supplier supplier = new Supplier();
-            return supplier.getSupplierView(Context);
+            return supplier.getSupplierView(Context, "");
         }
 
         [WebMethod]

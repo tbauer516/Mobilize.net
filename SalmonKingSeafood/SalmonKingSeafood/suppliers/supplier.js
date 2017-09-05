@@ -13,7 +13,9 @@ const request = {
 
 $("#supplier-form").submit(function (e) {
     var clicked = $(document.activeElement).val(); // Button clicked
-
+    if (clicked == 'Search') {
+        e.preventDefault();
+    }
     // Default for Insert & Update
     var data = [clicked, $("#supplier-name").val(), $("#payment").val(), $("#note").val(), $("#fname").val(), $("#lname").val(), $("#email").val(),
                 $("#phone").val(), $("#title").val(), $("#extension").val(), $("#fax").val(), $("#billing-address").val(), $("#city").val(),
@@ -21,18 +23,16 @@ $("#supplier-form").submit(function (e) {
 
     if (clicked == "Delete") {
         data = [clicked, $("#supplier-name").val(), $("#fname").val(), $("#lname").val(), $("#title").val(), $("#billing-address").val(),
-                $("#city").val(), $("#state").val(), $("#zipcode").val(), $("#country").val()]
-    } 
-
+            $("#city").val(), $("#state").val()]
+    }
     var json = {
         supplierForm: data
     };
-
     console.log(data);
-    SupplierMethod(json, clicked);
+    SupplierMethod(json);
 });
 
-function SupplierMethod(data, method) {
+function SupplierMethod(data) {
     $.ajax({
         method: 'POST',
         url: "/BackEnd.asmx/SupplierMethod",
@@ -42,13 +42,16 @@ function SupplierMethod(data, method) {
         success: function (response) {
             console.log("good");
             console.log(response);
+            var table = document.querySelector(".table");
+            table.innerHTML = "";
+            populateRows(JSON.parse(response.d));
         },
         error: function (response) {
+            console.log("bad");
             console.log(response);
         }
     });
 }
-
 
 // Get the suppliers and tables
 function getSupplierSQL() {
@@ -85,12 +88,16 @@ function buildTable() {
     // Columns for the header
     var idTH = document.createElement("th");
     idTH.textContent = "SupplierID";
+    idTH.id = "SupplierID";
     var nameTH = document.createElement("th");
     nameTH.textContent = "Supplier Name";
+    nameTH.id = "supplier-name-id";
     var paymentTH = document.createElement("th");
     paymentTH.textContent = "Payment Terms";
+    paymentTH.id = "payment-id";
     var notesTH = document.createElement("th");
     notesTH.textContent = "Notes";
+    notesTH.id = "notes-id";
 
     // Contact
     var fnameTH = document.createElement("th");
@@ -121,24 +128,25 @@ function buildTable() {
     countryTH.textContent = "Country";
 
     // Append these elements to the table
+    //threadRow.appendChild(idTH);
     threadRow.appendChild(nameTH);
     threadRow.appendChild(paymentTH);
     threadRow.appendChild(notesTH);
 
-    // For table simplicity
     threadRow.appendChild(fnameTH);
     threadRow.appendChild(lnameTH);
-    threadRow.appendChild(emailTH);
-    threadRow.appendChild(phoneTH);
-    threadRow.appendChild(titleTH);
-    threadRow.appendChild(extensionTH);
-    threadRow.appendChild(faxTH);
-    threadRow.appendChild(billingTH);
-    // Hidden for simple visibility
-    threadRow.appendChild(cityTH);
-    threadRow.appendChild(stateTH);
-    threadRow.appendChild(zipcodeTH);
-    threadRow.appendChild(countryTH);
+
+    // For table simplicity
+    //threadRow.appendChild(emailTH);
+    //threadRow.appendChild(phoneTH);
+    //threadRow.appendChild(titleTH);
+    //threadRow.appendChild(extensionTH);
+    //threadRow.appendChild(faxTH);
+    //threadRow.appendChild(billingTH);
+    //threadRow.appendChild(cityTH);
+    //threadRow.appendChild(stateTH);
+    //threadRow.appendChild(zipcodeTH);
+    //threadRow.appendChild(countryTH);
 
     thead.appendChild(threadRow);
     table.appendChild(tbody);
@@ -161,14 +169,14 @@ function populateRows(rows) {
         var count = 0;
         // Iterate over each field
         supplierKeys.forEach(function (key) {
-            //if (count < 3) { // Just to grab 3 items for table simplicity
+            if (count < 5) { // Just to grab 3 items for table simplicity
                 var value = data[key];
                 //console.log(value); // Debugging purposes
                 var td = document.createElement("td");
                 td.textContent = value;
                 supplierTr.appendChild(td);
-            //}
-            //count++;
+            }
+            count++;
         });
         tbody.appendChild(supplierTr);
     });
