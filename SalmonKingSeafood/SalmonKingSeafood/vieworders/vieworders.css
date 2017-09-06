@@ -1,0 +1,25 @@
+﻿#orders {
+    overflow-x: scroll;
+}
+
+.order {
+    border-top: 1px solid black;
+}
+
+.item {
+    background-color: hsl(0, 0%, 90%);
+}
+
+th, td {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    padding: 5px 10px 5px 10px;
+}
+
+th:nth-last-of-type(1)::before, td:nth-last-of-type(1)::before {
+    content: "$";
+}
+
+tr:nth-last-of-type(1) {
+    border-bottom: 1px solid black;
+}

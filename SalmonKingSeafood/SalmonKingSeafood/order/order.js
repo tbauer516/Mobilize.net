@@ -1,48 +1,4 @@
-﻿const debounce = (func, wait, immediate) => {
-    let timeout;
-    return () => {
-        let context = this;
-        let later = () => {
-            timeout = null;
-            if (!immediate) func.apply(context);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-};
-
-const requestObject = {
-    headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-    },
-    method: 'POST',
-    credentials: 'include',
-    mode: 'cors'
-};
-
-const makeRequest = (funcName, data) => {
-    let request = JSON.parse(JSON.stringify(requestObject));
-
-    if (data) {
-        request.body = JSON.stringify(data);
-    }
-
-    return fetch('/BackEnd.asmx/' + funcName, request)
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            if (data.d)
-                data = data.d;
-            data = JSON.parse(data);
-            return data;
-        })
-        .catch(err => {
-            console.log(err);
-        });
-};
-
-const getProducts = (customerID) => {
+﻿const getProducts = (customerID) => {
     if (customerID === undefined)
         customerID = null;
 
@@ -51,7 +7,6 @@ const getProducts = (customerID) => {
             for (let i = 0; i < data.length; i++) {
                 data[i].Quantity = 0;
                 data[i].Price = 0;
-                data[i].Existence = 0;
             };
             return data.sort((a, b) => { return b.Ordered - a.Ordered });
         });

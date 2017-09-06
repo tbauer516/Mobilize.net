@@ -89,6 +89,10 @@
     <Content Include="products\product.js" />
     <Content Include="suppliers\supplier.js" />
     <Content Include="suppliers\index.html" />
+    <Content Include="vieworders\index.html" />
+    <Content Include="vieworders\main.css" />
+    <Content Include="vieworders\vieworders.css" />
+    <Content Include="vieworders\vieworders.js" />
     <Content Include="Web.config" />
     <Content Include="BackEnd.asmx" />
   </ItemGroup>

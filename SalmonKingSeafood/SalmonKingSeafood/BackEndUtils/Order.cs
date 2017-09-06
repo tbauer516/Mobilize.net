@@ -74,7 +74,7 @@ namespace SalmonKingSeafood.BackEndUtils
         public static string GetProducts(HttpContext Context, object CustomerID)
         {
             string cmdString = "" +
-                "SELECT prod.ProductCode Code, prod.ProductName Product, prod.UnitPrice, prod.QuantityPerUnit QuantityPer, prod.ProductID " +
+                "SELECT prod.ProductCode Code, prod.ProductName Product, prod.UnitPrice, prod.QuantityPerUnit QuantityPer, prod.ProductID, prod.Unit Existence " +
                 "FROM tblPRODUCT prod";
 
             var products = MakeSQLQuery(cmdString);
@@ -175,6 +175,22 @@ namespace SalmonKingSeafood.BackEndUtils
                 Context.Response.ContentType = "application/json";
                 return new JavaScriptSerializer().Serialize(returnStatus);
             }
+        }
+
+        public static string ViewOrders(HttpContext Context)
+        {
+            string cmdString = "SELECT cust.CompanyName, ord.OrderDate, ord.TotalAmount, li.OrderID, li.Quantity, prod.ProductName, prod.UnitPrice " +
+                "FROM tblLINE_ITEM li " +
+                "JOIN tblORDER ord ON li.OrderID = ord.OrderID " +
+                "JOIN tblPRODUCT prod ON prod.ProductID = li.ProductID " +
+                "JOIN tblCUSTOMER cust ON ord.CustomerID = cust.CustomerID " +
+                "ORDER BY li.OrderID DESC";
+
+            var results = MakeSQLQuery(cmdString);
+
+            Context.Response.Clear();
+            Context.Response.ContentType = "application/json";
+            return new JavaScriptSerializer().Serialize(results);
         }
     }
 }

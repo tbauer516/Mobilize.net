@@ -370,6 +370,13 @@ namespace SalmonKingSeafood
             return Order.CreateOrder(Context, customerID, products);
         }
 
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string ViewOrders()
+        {
+            return Order.ViewOrders(Context);
+        }
+
     }
 
 }
