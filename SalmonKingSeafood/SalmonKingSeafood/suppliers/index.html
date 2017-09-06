@@ -12,6 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
     <link href="../css/main.css" rel="stylesheet" type="text/css" />
+    <link href="supplier.css" rel="stylesheet" type="text/css" />
     <script defer src="../js/app.js"></script>
 
     <script defer src="supplier.js"></script>
@@ -41,6 +42,7 @@
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="ddOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Order</button>
                     <div class="dropdown-menu" aria-labelledby="ddOrder">
                         <a class="dropdown-item" href="/order">Create Order</a>
+                        <a class="dropdown-item" href="/vieworders">View Orders</a>
                         <a class="dropdown-item" href="/invoice">Create Invoice</a>
                         <a class="dropdown-item" href="/stock">Add Stock Order</a>
                         <a class="dropdown-item" href="/stock">Add Stock to Inventory</a>
@@ -70,14 +72,13 @@
         </div>
     </nav>
 
-    <h2>
-        Manage Suppliers
-        <a id="go-back" href="/">Go Back</a>
-    </h2>
-    
     <div class="container-fluid">
+        <h3>
+            Manage Suppliers
+            <a id="go-back" href="/">Back</a>
+        </h3>
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-5">
                 <form id="supplier-form">
                     <div class="form-group">
                         <button type="submit" id="add-button" value="Insert" class="btn btn-default">Add</button>
@@ -87,59 +88,60 @@
                         <button type="submit" id="delete-button" value="Delete" class="btn btn-default">Delete</button>
                     </div>
                     <div class="form-group">
-                        <label for="supplier" class="control-label">Supplier: </label>
-                        <input type="text" id="supplier-name" class="form-control" placeholder="Supplier" value="Staples"/>
+                            <label for="supplier" class="control-label">Supplier: </label>
+                            <input type="text" id="supplier-name" class="form-control" />
 
-                        <label for="payment" class="control-label">Payment: </label>
-                        <input type="text" id="payment" class="form-control" placeholder="Payment" value="Payment terms on staples"/>
+                            <label for="payment" class="control-label">Payment: </label>
+                            <input type="text" id="payment" class="form-control" />
 
-                        <label for="note" class="control-label">Notes: </label>
-                        <input type="text" id="note" class="form-control" placeholder="Notes" value="Notes on Staples"/>
+                            <label for="note" class="control-label">Notes: </label>
+                            <input type="text" id="note" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <h3>Location</h3>
+                        <h4>Location</h4>
                         <label for="address">Billing Address: </label>
-                        <input type="text" id="billing-address" class="form-control" placeholder="Billing Address" value="48th Plaza 45 NE"/>
+                        <input type="text" id="billing-address" class="form-control" />
 
                         <label for="city" class="control-label">City: </label>
-                        <input type="text" id="city" class="form-control" placeholder="City" value="Seattle"/>
+                        <input type="text" id="city" class="form-control" />
 
                         <label for="zipcode">Zipcode: </label>
-                        <input type="text" id="zipcode" class="form-control" placeholder="Zipcode" value="98115"/>
+                        <input type="text" id="zipcode" class="form-control" />
 
                         <label for="state" class="control-label">State: </label>
-                        <input type="text" id="state" class="form-control" placeholder="State" value="Washington"/>
+                        <input type="text" id="state" class="form-control" />
 
                         <label for="country" class="control-label">Country: </label>
-                        <input type="text" id="country" class="form-control" placeholder="USA" value="USA"/>
+                        <input type="text" id="country" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <h3>Other</h3>
+                        <h4>Other</h4>
                         <label for="extension" class="control-label">Extension: </label>
-                        <input type="text" id="extension" class="form-control" placeholder="Extension" value="106"/>
+                        <input type="text" id="extension" class="form-control" />
 
                         <label for="fax" class="control-label">Fax: </label>
-                        <input type="text" id="fax" class="form-control" placeholder="Fax" value="3539661874"/>
+                        <input type="text" id="fax" class="form-control" />
                     </div>
                     <div class="form-group">
                         <h3>Contact: </h3>
                         <label for="first-name" class="control-label">First Name: </label>
-                        <input type="text" id="fname" class="form-control" placeholder="First name" value="Molly"/>
+                        <input type="text" id="fname" class="form-control" />
 
                         <label for="last-name" class="control-label">Last Name: </label>
-                        <input type="text" id="lname" class="form-control" placeholder="Last name" value="Holly"/>
+                        <input type="text" id="lname" class="form-control" />
 
                         <label for="email" class="control-label">Email: </label>
-                        <input type="email" id="email" class="form-control" placeholder="Email" value="mollyholly@gmail.com"/>
+                        <input type="email" id="email" class="form-control" />
 
                         <label for="phone" class="control-label">Phone Number: </label>
-                        <input type="text" id="phone" class="form-control" placeholder="Phone Number" value="4247478558"/>
+                        <input type="text" id="phone" class="form-control" />
 
                         <label for="title" class="control-label">Title: </label>
-                        <input type="text" id="title" class="form-control" placeholder="Title" value="Manager"/>
+                        <input type="text" id="title" class="form-control" />
                     </div>
                 </form>
             </div>
+            <!--<div class="col-sm-12" id="report">-->
             <div class="col-sm-6" id="report">
                 <table class="table"></table>
             </div>
