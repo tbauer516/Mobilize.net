@@ -15,7 +15,7 @@ const requestObject = {
     headers: {
         'Content-Type': 'application/json; charset=utf-8'
     },
-    method: 'GET',
+    method: 'POST',
     credentials: 'include',
     mode: 'cors'
 };
@@ -25,7 +25,6 @@ const makeRequest = (funcName, data) => {
 
     if (data) {
         request.body = JSON.stringify(data);
-        request.method = 'POST';
     }
 
     return fetch('/BackEnd.asmx/' + funcName, request)
@@ -43,8 +42,19 @@ const makeRequest = (funcName, data) => {
         });
 };
 
-const getProducts = () => {
-    return makeRequest('GetProducts');
+const getProducts = (customerID) => {
+    if (customerID === undefined)
+        customerID = null;
+
+    return makeRequest('GetProducts', { CustomerID: customerID })
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                data[i].Quantity = 0;
+                data[i].Price = 0;
+                data[i].Existence = 0;
+            };
+            return data.sort((a, b) => { return b.Ordered - a.Ordered });
+        });
 };
 
 const getCustomers = () => {
@@ -156,7 +166,15 @@ const searchCustomers = () => {
     }
     $('#customer-list input[type=radio]').on('click', (event) => {
         setSelected(event.target.value);
-        updateOrderData();
+        let prodProm = getProducts(customerList[event.target.value].CustomerID)
+            .then(data => {
+                productList = data;
+                searchProducts();
+                updateOrderData();
+            })
+            .catch(err => {
+                console.log(err);
+            });
     });
 };
 
@@ -165,8 +183,7 @@ const resetForm = () => {
         $('input').val('');
         $('input:checked').prop('checked', false);
         $('input[type=number]').val('0.00');
-        productHtml.find('input[type=number]').val('0');
-        $('input[type=number]').trigger('input');
+        productHtml.empty();
     }
 };
 
@@ -228,21 +245,15 @@ $(() => {
             console.log(err);
         });
 
-    let prodProm = getProducts()
-        .then(data => {
-            productList = [];
-            for (let i = 0; i < data.length; i++) {
-                data[i].Quantity = 0;
-                data[i].Price = 0;
-                data[i].Existence = 0;
-                data[i].Ordered = 0;
-            }
-            productList = data;
-            searchProducts();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    //let prodProm = getProducts()
+    //    .then(data => {
+    //        productList = data;
+    //        searchProducts();
+    //    })
+    //    .catch(err => {
+    //        console.log(err);
+    //    });
+    let prodProm = Promise.resolve();
 
     let taxProm = getTax()
         .then(data => {
@@ -271,14 +282,14 @@ $('form[name=tax]').on('submit', (event) => {
         return false;
     }
 
-    if (orderData.products.length == 0) {
+    if (orderData.products.length === 0) {
         showModal('Order: Failed!', 'Please make sure you select at least one product!', false);
         return false;
     }
 
     makeRequest('CreateOrder', orderData)
         .then(data => {
-            if (data.ReturnValue == returnStatus.success) {
+            if (data.ReturnValue === returnStatus.success) {
                 showModal('Order: Completed!', 'We will clear the form for you so you don\'t accidentally make another order.', true);
             } else {
                 showModal('Order: Failed!', 'Something went wrong! Please try again!', false);

@@ -343,21 +343,21 @@ namespace SalmonKingSeafood
         }
 
         [WebMethod]
-        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string GetCustomers()
         {
             return Order.GetCustomers(Context);
         }
 
         [WebMethod]
-        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string GetProducts()
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetProducts(object CustomerID)
         {
-            return Order.GetProducts(Context, 1);
+            return Order.GetProducts(Context, CustomerID);
         }
 
         [WebMethod]
-        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string GetTax()
         {
             return Order.GetTax(Context);
