@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SalmonKingSeafood.BackEndUtils;
+using SalmonKingSeafood.suppliers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -77,170 +78,17 @@ namespace SalmonKingSeafood
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public string ViewSupplier()
         {
-            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
-            {
-                var results = new List<Dictionary<string, object>>();
-                string cmdString = "SELECT * FROM viewSupplierInfo"; 
-                SqlCommand SupplierCMD = new SqlCommand(cmdString, dbconnect);
-                dbconnect.Open();
-
-                using (SqlDataReader reader = SupplierCMD.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-                dbconnect.Close();
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                return new JavaScriptSerializer().Serialize(results);
-            }
+            Supplier supplier = new Supplier();
+            return supplier.getSupplierView(Context);
         }
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-        public string InsertSupplier(String[] supplierForm)
+        public string SupplierMethod(String[] supplierForm)
         {
-            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
-            {
-                String[] supplierInfo = { "SupplierName", "PaymentTerms", "Notes", "Fname", "Lname", "Email", "Phone", "Title", "Extension", "Fax", "BillingAddress", "City", "State", "Zipcode", "Country" };
-                var results = new List<Dictionary<string, object>>();
-
-                var cmdString = "exec uspInsertSupplier @" + supplierInfo[0] + " = '" + supplierForm[0] + "'";
-                for (int i = 1; i < supplierForm.Length; i++)
-                {
-                    cmdString += " , @" + supplierInfo[i] + " = '" + supplierForm[i] + "'";
-                }
-
-                SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
-                for (int i = 0; i < supplierForm.Length; i++)
-                {
-                    insertProductCmd.Parameters.AddWithValue(supplierInfo[i], supplierForm[i]);
-                }
-                dbconnect.Open();
-
-                using (SqlDataReader reader = insertProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-
-                dbconnect.Close();
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                return new JavaScriptSerializer().Serialize(results);
-            }
+            Supplier supplier = new Supplier();
+            return supplier.getSupplierMethod(Context, supplierForm);
         }
-
-        [WebMethod]
-        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-        public string UpdateSupplier(String[] supplierForm)
-        {
-            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
-            {
-                String[] supplierInfo = { "SupplierName", "PaymentTerms", "Notes", "Fname", "Lname", "Email", "Phone", "Title", "Extension", "Fax", "BillingAddress", "City", "State", "Zipcode", "Country" };
-                var results = new List<Dictionary<string, object>>();
-
-                var cmdString = "exec uspUpdateSupplier @" + supplierInfo[0] + " = '" + supplierForm[0] + "'";
-                for (int i = 1; i < supplierForm.Length; i++)
-                {
-                    cmdString += " , @" + supplierInfo[i] + " = '" + supplierForm[i] + "'";
-                }
-
-                SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
-                for (int i = 0; i < supplierForm.Length; i++)
-                {
-                    insertProductCmd.Parameters.AddWithValue(supplierInfo[i], supplierForm[i]);
-                }
-                dbconnect.Open();
-
-                using (SqlDataReader reader = insertProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-
-                dbconnect.Close();
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                return new JavaScriptSerializer().Serialize(results);
-            }
-        }
-
-        [WebMethod]
-        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-        public string DeleteSupplier(String[] supplierForm)
-        {
-            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
-            {
-                String[] supplierInfo = { "SupplierName", "Fname", "Lname", "Title", "BillingAddress", "City", "State", "Zipcode", "Country" };
-                var results = new List<Dictionary<string, object>>();
-
-                var cmdString = "exec uspDeleteSupplier @" + supplierInfo[0] + " = '" + supplierForm[0] + "'";
-                for (int i = 1; i < supplierForm.Length; i++)
-                {
-                    cmdString += " , @" + supplierInfo[i] + " = '" + supplierForm[i] + "'";
-                }
-
-                SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
-                for (int i = 0; i < supplierForm.Length; i++)
-                {
-                    insertProductCmd.Parameters.AddWithValue(supplierInfo[i], supplierForm[i]);
-                }
-                dbconnect.Open();
-
-                using (SqlDataReader reader = insertProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-
-                dbconnect.Close();
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                return new JavaScriptSerializer().Serialize(results);
-            }
-        }
-        
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]

@@ -11,78 +11,34 @@ const request = {
     mode: 'cors'
 };
 
-$("#add-button").click(function (e) {
-    //e.preventDefault(); // Disallow the refreshing
-    // Get all values from the form -- find a better way to do this
-    var data = [$("#supplier-name").val(), $("#payment").val(), $("#note").val(), $("#fname").val(), $("#lname").val(), $("#email").val(),
+$("#supplier-form").submit(function (e) {
+    var clicked = $(document.activeElement).val(); // Button clicked
+
+    // Default for Insert & Update
+    var data = [clicked, $("#supplier-name").val(), $("#payment").val(), $("#note").val(), $("#fname").val(), $("#lname").val(), $("#email").val(),
                 $("#phone").val(), $("#title").val(), $("#extension").val(), $("#fax").val(), $("#billing-address").val(), $("#city").val(),
-                $("#state").val(), $("#zipcode").val(), $("#country").val()]
-    //console.log(data); // Debugging
-    var json = {
-        supplierForm: data
-    };
-    //console.log(json); // Debugging
-    $.ajax({
-        method: 'POST',
-        url: "/BackEnd.asmx/InsertSupplier",
-        contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        data: JSON.stringify(json),
-        success: function (response) {
-            console.log("good");
-            console.log(response);
-        },
-        error: function (response) {
-            console.log(response);
-        }
-    });
-});
+                $("#state").val(), $("#zipcode").val(), $("#country").val()];
 
-
-$("#edit-button").click(function (e) {
-    //e.preventDefault(); // Disallow the refreshing
-    // Get all values from the form -- find a better way to do this
-    var data = [$("#supplier-name").val(), $("#payment").val(), $("#note").val(), $("#fname").val(), $("#lname").val(), $("#email").val(),
-    $("#phone").val(), $("#title").val(), $("#extension").val(), $("#fax").val(), $("#billing-address").val(), $("#city").val(),
-    $("#state").val(), $("#zipcode").val(), $("#country").val()]
-    //console.log(data); // Debugging
-    var json = {
-        supplierForm: data
-    };
-    //console.log(json); // Debugging
-    $.ajax({
-        method: 'POST',
-        url: "/BackEnd.asmx/UpdateSupplier",
-        contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        data: JSON.stringify(json),
-        success: function (response) {
-            console.log("good");
-            console.log(response);
-        },
-        error: function (response) {
-            console.log(response);
-        }
-    });
-});
-
-// DELETE SUPPLIER -- CANNOT HAVE DUPLICATES, WILL NOT WORK
-$("#delete-button").click(function (e) {
-    //e.preventDefault(); // Disallow the refreshing
-    // Get all values from the form -- find a better way to do this
-    var data = [$("#supplier-name").val(), $("#fname").val(), $("#lname").val(), $("#title").val(), $("#billing-address").val(), 
+    if (clicked == "Delete") {
+        data = [clicked, $("#supplier-name").val(), $("#fname").val(), $("#lname").val(), $("#title").val(), $("#billing-address").val(),
                 $("#city").val(), $("#state").val(), $("#zipcode").val(), $("#country").val()]
-    //console.log(data); // Debugging
+    } 
+
     var json = {
         supplierForm: data
     };
-    //console.log(json); // Debugging
+
+    console.log(data);
+    SupplierMethod(json, clicked);
+});
+
+function SupplierMethod(data, method) {
     $.ajax({
         method: 'POST',
-        url: "/BackEnd.asmx/DeleteSupplier",
+        url: "/BackEnd.asmx/SupplierMethod",
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        data: JSON.stringify(json),
+        data: JSON.stringify(data),
         success: function (response) {
             console.log("good");
             console.log(response);
@@ -91,7 +47,8 @@ $("#delete-button").click(function (e) {
             console.log(response);
         }
     });
-});
+}
+
 
 // Get the suppliers and tables
 function getSupplierSQL() {
@@ -105,7 +62,6 @@ function getSupplierSQL() {
         .then(data => {
             // String to JSON object
             var json = JSON.parse(data);
-            //console.log(json);
             populateRows(json); // Build the table
             return data;
         })
@@ -117,6 +73,7 @@ function getSupplierSQL() {
 var table = document.querySelector(".table");
 
 // Build the outline of the table
+// reduce this later
 function buildTable() {
     // table body and table head
     var tbody = document.createElement("tbody");
@@ -164,7 +121,6 @@ function buildTable() {
     countryTH.textContent = "Country";
 
     // Append these elements to the table
-    //threadRow.appendChild(idTH);
     threadRow.appendChild(nameTH);
     threadRow.appendChild(paymentTH);
     threadRow.appendChild(notesTH);
@@ -190,7 +146,6 @@ function buildTable() {
 }
 
 // Populate the supplier table
-// TODO: Add an edit button
 function populateRows(rows) {
     buildTable();
     var tbody = document.querySelector("tbody");
@@ -201,17 +156,19 @@ function populateRows(rows) {
 
         // Object.keys returns an array of the keys object
         var supplierKeys = Object.keys(data);
+        // for reduced table set find the specific column numbers to filter out
+        // or revise the view to account for specific data points
         var count = 0;
         // Iterate over each field
         supplierKeys.forEach(function (key) {
-            //if (count < 11) { // Just to grab 3 items for table simplicity
+            //if (count < 3) { // Just to grab 3 items for table simplicity
                 var value = data[key];
                 //console.log(value); // Debugging purposes
                 var td = document.createElement("td");
                 td.textContent = value;
                 supplierTr.appendChild(td);
             //}
-            count++;
+            //count++;
         });
         tbody.appendChild(supplierTr);
     });
