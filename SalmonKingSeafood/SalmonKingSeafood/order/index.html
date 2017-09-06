@@ -40,6 +40,7 @@
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="ddOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Order</button>
                     <div class="dropdown-menu" aria-labelledby="ddOrder">
                         <a class="dropdown-item" href="/order">Create Order</a>
+                        <a class="dropdown-item" href="/vieworders">View Orders</a>
                         <a class="dropdown-item" href="/invoice">Create Invoice</a>
                         <a class="dropdown-item" href="/stock">Add Stock Order</a>
                         <a class="dropdown-item" href="/stock">Add Stock to Inventory</a>
@@ -73,18 +74,18 @@
         <form name="search" class="container-fluid">
             <div class="row mt-3">
                 <div class="col-sm-12 col-lg-4 row mb-2">
-                    <label for="company-name" class="col-sm-4">Company Name:</label>
-                    <input name="company-name" type="text" class="col-sm-8" />
+                    <label for="company-name" class="col-sm-3 text-right">Company Name:</label>
+                    <input name="company-name" type="text" class="col-sm-9" />
                 </div>
 
                 <div class="col-sm-12 col-lg-4 row mb-2">
-                    <label for="contact-first-name" class="col-sm-4">Contact First Name:</label>
-                    <input name="contact-first-name" type="text" class="col-sm-8" />
+                    <label for="contact-first-name" class="col-sm-3 text-right">Contact First Name:</label>
+                    <input name="contact-first-name" type="text" class="col-sm-9" />
                 </div>
 
                 <div class="col-sm-12 col-lg-4 row mb-2">
-                    <label for="contact-last-name" class="col-sm-4">Contact Last Name:</label>
-                    <input name="contact-last-name" type="text" class="col-sm-8" />
+                    <label for="contact-last-name" class="col-sm-3 text-right">Contact Last Name:</label>
+                    <input name="contact-last-name" type="text" class="col-sm-9" />
                 </div>
             </div>
         </form>
@@ -101,12 +102,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 col-lg-6 row mb-2">
-                    <label for="selected-company" class="col-sm-3">Selected Company:</label>
+                    <label for="selected-company" class="col-sm-3 text-right">Selected Company:</label>
                     <input name="selected-company" type="text" class="col-sm-9" readonly />
                 </div>
 
                 <div class="col-sm-12 col-lg-6 row mb-2">
-                    <label for="selected-contact" class="col-sm-3">Selected Contact:</label>
+                    <label for="selected-contact" class="col-sm-3 text-right">Selected Contact:</label>
                     <input name="selected-contact" type="text" class="col-sm-9" readonly />
                 </div>
             </div>
@@ -121,30 +122,54 @@
 
         <hr />
 
-        <form name="tax" class="container-fluid">
+        <form name="tax" class="container-fluid" onsubmit="return false;">
             <div class="row mt-3">
                 <div class="col-sm-12 col-lg-6 row mb-2">
-                    <label for="sales-tax" class="col-sm-3">Sales Tax:</label>
-                    <input name="sales-tax" type="number" class="col-sm-9" />
+                    <label for="sales-tax" class="col-sm-3 text-right">Sales Tax:</label>
+                    <input name="sales-tax" type="number" class="col-sm-9" value="0.00" readonly />
                 </div>
 
                 <div class="col-sm-12 col-lg-6 row mb-2">
-                    <label for="shipping" class="col-sm-3">Shipping:</label>
-                    <input name="shipping" type="number" class="col-sm-9" />
+                    <label for="shipping" class="col-sm-3 text-right">Shipping:</label>
+                    <input name="shipping" type="number" class="col-sm-9" value="0.00" readonly />
                 </div>
 
                 <div class="col-sm-12 col-lg-6 row mb-2">
-                    <label for="sub-total" class="col-sm-3">Sub Total:</label>
-                    <input name="sub-total" type="number" class="col-sm-9" readonly />
+                    <label for="sub-total" class="col-sm-3 text-right">Sub Total:</label>
+                    <input name="sub-total" type="number" class="col-sm-9" value="0.00" readonly />
                 </div>
 
                 <div class="col-sm-12 col-lg-6 row mb-2">
-                    <label for="total" class="col-sm-3">Total:</label>
-                    <input name="total" type="number" class="col-sm-9" readonly />
+                    <label for="total" class="col-sm-3 text-right">Total:</label>
+                    <input name="total" type="number" class="col-sm-9" value="0.00" readonly />
                 </div>
+            </div>
+            <div class="row mt-3">
+                <button class="btn btn-submit" type="submit" name="formSubmit">Submit</button>
             </div>
         </form>
 
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ajaxStatus" tabindex="-1" role="dialog" aria-labelledby="ajaxStatusLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ajaxStatusLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

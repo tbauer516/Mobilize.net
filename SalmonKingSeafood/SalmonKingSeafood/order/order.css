@@ -7,3 +7,7 @@ table th, table td {
     padding: 5px;
     white-space: nowrap;
 }
+
+table input[type=number] {
+    width: 50px;
+}

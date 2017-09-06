@@ -1,4 +1,7 @@
-﻿using SalmonKingSeafood.suppliers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SalmonKingSeafood.BackEndUtils;
+using SalmonKingSeafood.suppliers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -185,6 +188,41 @@ namespace SalmonKingSeafood
                 //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
                 return new JavaScriptSerializer().Serialize(results);
             }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetCustomers()
+        {
+            return Order.GetCustomers(Context);
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetProducts(object CustomerID)
+        {
+            return Order.GetProducts(Context, CustomerID);
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string GetTax()
+        {
+            return Order.GetTax(Context);
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string CreateOrder(int customerID, List<object> products)
+        {
+            return Order.CreateOrder(Context, customerID, products);
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string ViewOrders()
+        {
+            return Order.ViewOrders(Context);
         }
 
     }
