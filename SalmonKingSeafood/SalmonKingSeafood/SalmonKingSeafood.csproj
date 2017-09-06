@@ -98,6 +98,7 @@
     <Content Include="BackEnd.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="public\product\Product.cs" />
     <Compile Include="BackEndUtils\Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BackEnd.asmx.cs">

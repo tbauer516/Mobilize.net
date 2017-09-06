@@ -13,6 +13,7 @@ using System.Web.Script.Serialization;
 using System.Web.Script.Services;
 using System.Web.Services;
 
+
 namespace SalmonKingSeafood
 {
     /// <summary>
@@ -90,104 +91,20 @@ namespace SalmonKingSeafood
             return supplier.getSupplierMethod(Context, supplierForm);
         }
 
+
         [WebMethod]
-        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string SQLInsertNewProduct(String[] productInfo)
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public string ProductSQL(String[] data, String[] info)
         {
-            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
-            {
-                // var results = new Dictionary<string, object>();
-                var results = new List<Dictionary<string, object>>();
-                
-                string cmdString = "INSERT INTO tblPRODUCT(ProductName, ProductCode, ProductDescr, ProductCategory, ProductSerialNumber, Discontinued, UnitPrice, QtyPerUnit) " +
-                                   "VALUES (@ProductName, @ProductCode, @ProductDescr, @ProductCategory, @ProductSerialNumber, @Discontinued, @UnitPrice, @QtyPerUnit)";
-
-                SqlCommand insertProductCmd = new SqlCommand(cmdString, dbconnect);
-                insertProductCmd.Parameters.AddWithValue("@ProductName", productInfo[0]);
-                insertProductCmd.Parameters.AddWithValue("@ProductCode", productInfo[1]);
-                insertProductCmd.Parameters.AddWithValue("@ProductDescr", productInfo[2]);
-                insertProductCmd.Parameters.AddWithValue("@ProductCategory", productInfo[3]);
-                insertProductCmd.Parameters.AddWithValue("@ProductSerialNumber", productInfo[4]);
-                insertProductCmd.Parameters.AddWithValue("@Discontinued", productInfo[5]);
-                insertProductCmd.Parameters.AddWithValue("@UnitPrice", productInfo[6]);
-                insertProductCmd.Parameters.AddWithValue("@QtyPerUnit", productInfo[7]);
-                dbconnect.Open();
-
-                using (SqlDataReader reader = insertProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-
-                dbconnect.Close();
-
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
-                return new JavaScriptSerializer().Serialize(results);
-            }
+            return Product.ProductSQL(Context, data, info);
         }
 
+
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string SQLFindProduct(string ProductName, string ProductCode, string SerialNumber, string Discontinued, string UnitPrice, string QuantityPerUnit, string Unit)
+        public string SQLViewProduct()
         {
-            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
-            {
-                // var results = new Dictionary<string, object>();
-                var results = new List<Dictionary<string, object>>();
-
-                string cmdString = "SELECT * FROM tblPRODUCT WHERE " +
-                                   "(ProductName = @ProductName OR ProductName LIKE '%')" +
-                                   "AND (ProductCode = @ProductCode OR ProductCode LIKE '%')" +
-                                   "AND (SerialNumber = @SerialNumber OR SerialNumber LIKE '%')" +
-                                   "AND (Discontinued = @Discontinued OR Discontinued LIKE '%')" +
-                                   "AND (UnitPrice = @UnitPrice OR UnitPrice LIKE '%')" +
-                                   "AND (QuantityPerUnit = @QuantityPerUnit OR QuantityPerUnit LIKE '%')" +
-                                   "AND (Unit = @Unit OR Unit LIKE '%')";
-                SqlCommand FindProductCmd = new SqlCommand(cmdString, dbconnect);
-                FindProductCmd.Parameters.AddWithValue("@ProductName", ProductName);
-                FindProductCmd.Parameters.AddWithValue("@ProductCode", ProductCode);
-                FindProductCmd.Parameters.AddWithValue("@SerialNumber", SerialNumber);
-                FindProductCmd.Parameters.AddWithValue("@Discontinued", Discontinued);
-                FindProductCmd.Parameters.AddWithValue("@UnitPrice", UnitPrice);
-                FindProductCmd.Parameters.AddWithValue("@QtyPerUnit", QuantityPerUnit);
-                FindProductCmd.Parameters.AddWithValue("@Unit", Unit);
-                dbconnect.Open();
-
-                using (SqlDataReader reader = FindProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-
-                dbconnect.Close();
-
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
-                return new JavaScriptSerializer().Serialize(results);
-            }
+            return Product.SQLViewProduct(Context);
         }
 
         [WebMethod]

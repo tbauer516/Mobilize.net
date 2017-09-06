@@ -1,101 +1,120 @@
 (function () {
     "use strict";
 
-    var requestData;
+    var buttonValue;
 
-    let getFormData = () => {
-        var formData = $('form').serializeArray();
-        requestData = JSON.parse(formData[0])
-    }
+    $(window).ready(function () {
+        createTable();
+        getProductInfo();
+        $("#form button").click(function (event) {
+            buttonValue = $(this).val();
+        });
+        $("#form").submit(function (event) {
+            event.preventDefault();
+            if (buttonValue == "Search") {
+                getProductInfo();
+            } else {
+                formSubmit(event);
+            }
+        });
+
+    });
 
     const request = {
         headers: {
             'Content-Type': 'application/json; charset=utf-8'
         },
-        method: 'POST',
-        data: ,
+        method: 'GET',
         credentials: 'include',
         mode: 'cors'
     };
 
-    let getProductInfo = () => {
-        request.data = JOSN.stringify($('form').serializeArray()[0]);
-        return fetch('/BackEnd.asmx/SQLFindProduct', request)
+    // Submits a request for all products and displays the data in a table.
+    function getProductInfo() {
+        return fetch('/BackEnd.asmx/SQLViewProduct', request)
             .then(response => {
-                console.log(response);
                 return response.json();
             })
             .then(data => {
-                console.log(data);
                 return data.d;
             })
-            .catch(err => {
-                console.log(err.Message);
-            })
             .then(data => {
-                let output = document.getElementById("#output");
-                output.innerHtml = data[0];
-                console.log(data);
+                var json = JSON.parse(data);                
+                fillTable(json);
             })
             .catch(err => {
                 console.log(err);
             })
     };
+
     
+   
 
-    $(window).ready(function () {
-        var buttons = $("button");
-        $("form").submit(function (event) {
-
-            getProductInfo();
-            //switch("search") {
-            //    case "add":
-            //        getProductInfo("SQLInsertNewProduct");
-            //    case "edit":
-            //        getProductInfo("SQLUpdateProduct");
-            //    case "save":
-            //        getProductInfo("SQLUpdateNewProduct");
-            //    case "delete":
-            //        getProductInfo("SQLDeleteProduct");
-            //    case "search":
-            //        getProductInfo("SQLFindProduct");
-            //    case "hello":
-            //        getProductInfo("HelloWorld");
-            //}
-            
-            event.preventDefault();
-        });
-
+    function formSubmit(event) {
+        var formData;
+        var productInfo;
+        if (buttonValue != "Delete") {
+            formData = [buttonValue, $("#pname").val(), $("#pdescr").val(), $("#ptype").val(), $("#pcode").val(), $("#pserial").val(), $("#pdiscontinued").val(),
+                $("#punitprice").val(), $("#pquantity").val(), $("#punit").val()];
+            productInfo = ["ProductName", "ProductDesc", "ProductTypeName", "ProductCode", "SerialNumber", "Discontinued", "UnitPrice", "QuantityPerUnit", "Unit"];
+        } else {
+            formData = [buttonValue, $("#pname").val()];
+            productInfo = ["ProductName"]
+        }
         
-    });
+        var json = {
+            data: formData,
+            info: productInfo
+        };
+        $.ajax({
+            method: 'POST',
+            url: "/BackEnd.asmx/ProductSQL",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            data: JSON.stringify(json),
+            success: function (response) {
+                getProductInfo();
+            },
+            error: function (response) {
+                console.log(response);
+                console.log(response.responseText);
+            }
+        });
+    }
 
-  
+    // Create the product table with column headers. 
+    function createTable() {
+        var productInfo = ["ProductID", "ProductName", "ProductDescr", "ProductType", "ProductCode", "ProductSerialNumber",  "Discontinued", "UnitPrice", "Qty", "unit"];
+        var table = $(".table");
+        var tbody = document.createElement("tbody");
+        tbody.id = "tbody";
+        var thead = document.createElement("thead");
+        var row = thead.insertRow(0);
+        for (var i = 0; i < productInfo.length; i++) {
+            var td = document.createElement("td");
+            td.textContent = productInfo[i];
+            row.append(td);
+        }
+        thead.append(row);
+        table.append(thead);
+        table.append(tbody);
+        
+    }
 
-
-    //function getProductInfo(method) {
-    //    var url = "BackEnd.asmx/" + method;
-    //    var output = $("#output");
-    //    output.css("white-space", "pre-line");
-    //    var product_info = $(this).serializeArray();
-    //    var product_data = {};
-    //    $.each(product_info, function (i, info) {
-    //        product_data.push(info.value)
-    //    })
-    //    $.ajax({
-    //        type: "GET",
-    //        URL: "BackEnd.asmx/SQLFindProduct",
-    //       // data: product_info,
-    //        dataType: "json",
-    //        success: function (data) {
-    //            console.log("hi");
-    //            output.html(data);
-    //        },
-    //        error: function (data) {
-    //            console.log(data);
-    //        }
-    //    })
-    //}
-    
+    // Fills the output table with json data
+    function fillTable(json) {
+        var tbody = $("#tbody");
+        tbody.find("tr").remove();
+        $.each(json, function (i, row) {
+            var tr = document.createElement("tr");
+            $.each(row, function (j, rowData) {
+                var td = document.createElement("td");
+                td.textContent = rowData;
+                tr.append(td);
+            });
+            tbody.append(tr);
+        }); 
+    }
     
 })();
 

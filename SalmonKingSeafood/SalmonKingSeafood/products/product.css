@@ -1,14 +1,26 @@
 ﻿body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
 button {
     display: inline-block;
+    white-space: nowrap;
 }
 
-#hello {
-    clear: right;
+#output {
+    overflow-x:scroll;
 }
 
-input {
-    clear: both;
+table {
+    border-collapse: collapse;
+    min-width: 100%;
+}
+
+table, th, td, tr {
+    border: 1px solid black;
+    white-space:nowrap;
+}
+
+th, tb, tr {
+    min-height: 50px;
 }
