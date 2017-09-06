@@ -91,14 +91,13 @@
     <Content Include="suppliers\supplier.js" />
     <Content Include="suppliers\index.html" />
     <Content Include="vieworders\index.html" />
-    <Content Include="vieworders\main.css" />
     <Content Include="vieworders\vieworders.css" />
     <Content Include="vieworders\vieworders.js" />
     <Content Include="Web.config" />
     <Content Include="BackEnd.asmx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="public\product\Product.cs" />
+    <Compile Include="products\Product.cs" />
     <Compile Include="BackEndUtils\Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BackEnd.asmx.cs">
