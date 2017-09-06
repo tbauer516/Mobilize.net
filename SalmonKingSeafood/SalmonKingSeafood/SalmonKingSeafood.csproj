@@ -87,6 +87,7 @@
     <Content Include="products\product.css" />
     <Content Include="products\index.html" />
     <Content Include="products\product.js" />
+    <Content Include="suppliers\supplier.css" />
     <Content Include="suppliers\supplier.js" />
     <Content Include="suppliers\index.html" />
     <Content Include="vieworders\index.html" />
