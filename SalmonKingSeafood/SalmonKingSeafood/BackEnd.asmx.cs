@@ -244,41 +244,7 @@ namespace SalmonKingSeafood
         [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
         public string ProductSQL(String[] data, String[] info)
         {
-            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
-            {
-                // var results = new Dictionary<string, object>();
-                var results = new List<Dictionary<string, object>>();
-                string cmdString = "exec usp" + data[0] + "Product @" + info[0] + " = '" + data[1] + "'";
-                for (var i = 1; i < info.Length; i++)
-                {
-                    cmdString += ", @" + info[i] + " = '" + data[i+1] + "'" ;
-                }
-                Console.WriteLine(cmdString);
-                SqlCommand addProductCmd = new SqlCommand(cmdString, dbconnect);
-                dbconnect.Open();
-                using (SqlDataReader reader = addProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-
-                dbconnect.Close();
-
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                //Context.Response.Write(new JavaScriptSerializer().Serialize(results));
-                return new JavaScriptSerializer().Serialize(results);
-            }
+            return Product.ProductSQL(Context, data, info);
         }
 
 
@@ -286,35 +252,7 @@ namespace SalmonKingSeafood
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public string SQLViewProduct()
         {
-            using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
-            {
-                // var results = new Dictionary<string, object>();
-                var results = new List<Dictionary<string, object>>();
-
-                string cmdString = "SELECT * FROM tblPRODUCT";
-                SqlCommand FindProductCmd = new SqlCommand(cmdString, dbconnect);
-                dbconnect.Open();
-
-                using (SqlDataReader reader = FindProductCmd.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            var item = new Dictionary<string, object>();
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                item.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader.GetValue(i));
-                            }
-                            results.Add(item);
-                        }
-                    }
-                }
-                dbconnect.Close();
-                Context.Response.Clear();
-                Context.Response.ContentType = "application/json";
-                return new JavaScriptSerializer().Serialize(results);
-            }
+            return Product.SQLViewProduct(Context);
         }
 
     }

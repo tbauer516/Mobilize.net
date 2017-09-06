@@ -7,14 +7,6 @@ button {
     white-space: nowrap;
 }
 
-#hello {
-    clear: right;
-}
-
-input {
-    clear: both;
-}
-
 #output {
     overflow-x:scroll;
 }
@@ -26,6 +18,7 @@ table {
 
 table, th, td, tr {
     border: 1px solid black;
+    white-space:nowrap;
 }
 
 th, tb, tr {

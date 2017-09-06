@@ -39,9 +39,7 @@
                 return data.d;
             })
             .then(data => {
-                var json = JSON.parse(data);
-//                console.log(json); // For debug
-                
+                var json = JSON.parse(data);                
                 fillTable(json);
             })
             .catch(err => {
@@ -68,7 +66,6 @@
             data: formData,
             info: productInfo
         };
-        console.log(json);
         $.ajax({
             method: 'POST',
             url: "/BackEnd.asmx/ProductSQL",
@@ -108,7 +105,6 @@
     function fillTable(json) {
         var tbody = $("#tbody");
         tbody.find("tr").remove();
-//        console.log(tbody);  // For debug
         $.each(json, function (i, row) {
             var tr = document.createElement("tr");
             $.each(row, function (j, rowData) {
@@ -116,7 +112,6 @@
                 td.textContent = rowData;
                 tr.append(td);
             });
-//            console.log(tr); // For debug
             tbody.append(tr);
         }); 
     }
