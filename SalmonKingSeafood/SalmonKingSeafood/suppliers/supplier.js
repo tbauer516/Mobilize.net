@@ -13,7 +13,7 @@ const request = {
 
 $("#supplier-form").submit(function (e) {
     var clicked = $(document.activeElement).val(); // Button clicked
-    if (clicked == 'Search') {
+    if (clicked === 'Search') {
         e.preventDefault();
     }
     // Default for Insert & Update
@@ -21,7 +21,7 @@ $("#supplier-form").submit(function (e) {
                 $("#phone").val(), $("#title").val(), $("#extension").val(), $("#fax").val(), $("#billing-address").val(), $("#city").val(),
                 $("#state").val(), $("#zipcode").val(), $("#country").val()];
 
-    if (clicked == "Delete") {
+    if (clicked === "Delete") {
         data = [clicked, $("#supplier-name").val(), $("#fname").val(), $("#lname").val(), $("#title").val(), $("#billing-address").val(),
             $("#city").val(), $("#state").val()]
     }
@@ -74,9 +74,10 @@ function getSupplierSQL() {
 };
 
 var table = document.querySelector(".table");
+var headers = ["ID", "Supplier", "Payment Terms", "Notes", "First", "Last", "Email", "Phone",
+    "Title", "Ext", "Fax", "Address", "City", "State", "Zipcode", "Country"];
 
 // Build the outline of the table
-// reduce this later
 function buildTable() {
     // table body and table head
     var tbody = document.createElement("tbody");
@@ -85,68 +86,11 @@ function buildTable() {
     // Row for the header
     var threadRow = document.createElement("tr");
 
-    // Columns for the header
-    var idTH = document.createElement("th");
-    idTH.textContent = "SupplierID";
-    idTH.id = "SupplierID";
-    var nameTH = document.createElement("th");
-    nameTH.textContent = "Supplier Name";
-    nameTH.id = "supplier-name-id";
-    var paymentTH = document.createElement("th");
-    paymentTH.textContent = "Payment Terms";
-    paymentTH.id = "payment-id";
-    var notesTH = document.createElement("th");
-    notesTH.textContent = "Notes";
-    notesTH.id = "notes-id";
-
-    // Contact
-    var fnameTH = document.createElement("th");
-    fnameTH.textContent = "First Name";
-    var lnameTH = document.createElement("th");
-    lnameTH.textContent = "Last Name";
-    var emailTH = document.createElement("th");
-    emailTH.textContent = "Email";
-    var phoneTH = document.createElement("th");
-    phoneTH.textContent = "Phone";
-    var titleTH = document.createElement("th");
-    titleTH.textContent = "Title";
-    var extensionTH = document.createElement("th");
-    extensionTH.textContent = "Extension";
-    var faxTH = document.createElement("th");
-    faxTH.textContent = "Fax";
-
-    // Address
-    var billingTH = document.createElement("th");
-    billingTH.textContent = "Billing Address";
-    var cityTH = document.createElement("th");
-    cityTH.textContent = "City";
-    var stateTH = document.createElement("th");
-    stateTH.textContent = "State";
-    var zipcodeTH = document.createElement("th");
-    zipcodeTH.textContent = "Zipcode";
-    var countryTH = document.createElement("th");
-    countryTH.textContent = "Country";
-
-    // Append these elements to the table
-    //threadRow.appendChild(idTH);
-    threadRow.appendChild(nameTH);
-    threadRow.appendChild(paymentTH);
-    threadRow.appendChild(notesTH);
-
-    threadRow.appendChild(fnameTH);
-    threadRow.appendChild(lnameTH);
-
-    // For table simplicity
-    //threadRow.appendChild(emailTH);
-    //threadRow.appendChild(phoneTH);
-    //threadRow.appendChild(titleTH);
-    //threadRow.appendChild(extensionTH);
-    //threadRow.appendChild(faxTH);
-    //threadRow.appendChild(billingTH);
-    //threadRow.appendChild(cityTH);
-    //threadRow.appendChild(stateTH);
-    //threadRow.appendChild(zipcodeTH);
-    //threadRow.appendChild(countryTH);
+    for (i = 0; i < headers.length; i++) {
+        var valueTH = document.createElement("th");
+        valueTH.textContent = headers[i];
+        threadRow.append(valueTH);
+    }
 
     thead.appendChild(threadRow);
     table.appendChild(tbody);
@@ -164,19 +108,13 @@ function populateRows(rows) {
 
         // Object.keys returns an array of the keys object
         var supplierKeys = Object.keys(data);
-        // for reduced table set find the specific column numbers to filter out
-        // or revise the view to account for specific data points
-        var count = 0;
+
         // Iterate over each field
         supplierKeys.forEach(function (key) {
-            if (count < 5) { // Just to grab 3 items for table simplicity
-                var value = data[key];
-                //console.log(value); // Debugging purposes
-                var td = document.createElement("td");
-                td.textContent = value;
-                supplierTr.appendChild(td);
-            }
-            count++;
+            var value = data[key];
+            var td = document.createElement("td");
+            td.textContent = value;
+            supplierTr.appendChild(td);
         });
         tbody.appendChild(supplierTr);
     });

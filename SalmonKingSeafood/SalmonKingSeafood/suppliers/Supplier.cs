@@ -75,7 +75,7 @@ namespace SalmonKingSeafood.suppliers
             using (System.Data.SqlClient.SqlConnection dbconnect = new SqlConnection(ConfigurationManager.ConnectionStrings["SKSData"].ToString()))
             {
                 var results = new List<Dictionary<string, object>>();
-                string cmdString = "SELECT * FROM viewSupplierInfo" + query;
+                string cmdString = "SELECT * FROM viewSupplier" + query;
                 SqlCommand SupplierCMD = new SqlCommand(cmdString, dbconnect);
                 dbconnect.Open();
 

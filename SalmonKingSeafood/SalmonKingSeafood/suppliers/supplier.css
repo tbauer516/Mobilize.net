@@ -1,7 +1,8 @@
-﻿body {
-}
-
-#go-back {
+﻿#go-back {
     font-size: 60%;
     margin: 10px;
+}
+
+#report {
+    overflow-x: scroll;
 }
