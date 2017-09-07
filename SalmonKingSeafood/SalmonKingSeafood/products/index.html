@@ -6,7 +6,7 @@
     <title>Manageing Products</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
@@ -71,46 +71,49 @@
         </div>
     </nav>
 
-    <h1>Products</h1>
+    <h2>Products</h2>
 
-    <h2>Product Information</h2>
-    <form id="form" method="get" action="">
-        <button type="submit" id="add">Add</button>
-        <button type="submit" id="edit">Edit</button>
-        <button type="submit" id="save">Save</button>
-        <button type="submit" id="delete">Delete</button>
-        <button type="submit" id="search">Search</button>
-        <button type="submit" id="hello">hello</button>
-        Product Code: 
-        <input type="text" id="pcode" name="pcode" placeholder="T" /><br />
-        Product Name:
-        <input type="text" id="pname" name="pname" placeholder="Tuna" /><br />
-        Description:
-        <input type="text" id="pdescr" name="pdescr" placeholder="Delicious fish" /><br />
-        Category:
-        <select id="pcategory" name="pcategory">
-            <option value="Fish">Fish</option>
-            <option value="Crab">Crab</option>
-            <option value="Oyster">Oyster</option>
-            <option value="Meat">Meat</option>
-            <option value="Fungi">Fungi</option>
-            <option value="Feather">Feather</option>
-            <option value="Shark">Shark</option>
-            <option value="Turtle">Turtle</option>
-        </select>
-        <br />
-        Serial Number:
-        <input type="text" id="pserial" name="pserial" placeholder="12345" /><br />
-        Discontinued:
-        <input type="checkbox" id="pdiscontinued" name="pdiscontinued" /><br />
-        Unit Price: 
-        <input type="number" id="punitprice" name="punitprice" placeholder="30.00"/><br />
-        Quantity per unit: 
-        <input type="number" id="pquantity" name="pquantity" placeholder="25"/><br />
-        Units:
-        <input type="text" id="punit" name="punit" placeholder="kg"/><br />
-    </form>
+    <div class="container-fluid">
+        <div class="col-sm-3">
+            <form id="form">
+                <button type="submit" value="Insert">Add</button>
+                <button type="submit" value="Update">Edit</button>
+                <button type="submit" value="Delete">Delete</button>
+                <button type="submit" value="Search">Search</button><br />
+                Product Name:
+                <input type="text" id="pname" name="pname" placeholder="Tuna" /><br />
+                Product Code:
+                <input type="text" id="pcode" name="pcode" placeholder="12345" /><br />
+                Description:
+                <input type="text" id="pdescr" name="pdescr" placeholder="Delicious fish" /><br />
+                Type
+                <select id="ptype" name="ptype">
+                    <option value="Fish">Fish</option>
+                    <option value="Crab">Crab</option>
+                    <option value="Oyster">Oyster</option>
+                    <option value="Meat">Meat</option>
+                    <option value="Fungi">Fungi</option>
+                    <option value="Feather">Feather</option>
+                    <option value="Shark">Shark</option>
+                    <option value="Turtle">Turtle</option>
+                </select>
+                <br />
+                Serial Number:
+                <input type="text" id="pserial" name="pserial" placeholder="12345" /><br />
+                Discontinued:
+                <input type="date" id="pdiscontinued" name="pdiscontinued" placeholder="2017-09-02" /><br />
+                Unit Price:
+                <input type="number" id="punitprice" name="punitprice" placeholder="30.00" /><br />
+                Quantity per unit:
+                <input type="number" id="pquantity" name="pquantity" placeholder="25" /><br />
+                Units:
+                <input type="text" id="punit" name="punit" placeholder="10" /><br />
+            </form>
+        </div>
+    </div>
     <h2>Output:</h2>
-    <div id="output"></div>
+    <div id="output">
+        <table class="table"></table>
+    </div>
 </body>
 </html>
